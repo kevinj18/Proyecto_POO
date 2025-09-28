@@ -76,6 +76,7 @@
             btnIniciar.TabIndex = 3;
             btnIniciar.Text = "Iniciar";
             btnIniciar.UseVisualStyleBackColor = true;
+            btnIniciar.Click += btnIniciar_Click;
             // 
             // btnRegistrar
             // 
