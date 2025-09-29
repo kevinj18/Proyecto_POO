@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace Aplicacion_software_academico
 {
-    public partial class Form2 : Form
+    public partial class frm_Registrar : Form
     {
-        public Form2()
+        public frm_Registrar()
         {
             InitializeComponent();
         }

@@ -39,40 +39,43 @@
             // Usuario
             // 
             Usuario.AutoSize = true;
-            Usuario.Location = new Point(168, 143);
+            Usuario.Location = new Point(192, 191);
             Usuario.Name = "Usuario";
-            Usuario.Size = new Size(47, 15);
+            Usuario.Size = new Size(59, 20);
             Usuario.TabIndex = 0;
             Usuario.Text = "Usuario";
             // 
             // txtUsuario
             // 
-            txtUsuario.Location = new Point(239, 140);
+            txtUsuario.Location = new Point(273, 187);
+            txtUsuario.Margin = new Padding(3, 4, 3, 4);
             txtUsuario.Name = "txtUsuario";
-            txtUsuario.Size = new Size(287, 23);
+            txtUsuario.Size = new Size(327, 27);
             txtUsuario.TabIndex = 1;
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(148, 193);
+            label1.Location = new Point(169, 257);
             label1.Name = "label1";
-            label1.Size = new Size(67, 15);
+            label1.Size = new Size(83, 20);
             label1.TabIndex = 1;
             label1.Text = "Contraseña";
             // 
             // txtContrasena
             // 
-            txtContrasena.Location = new Point(239, 185);
+            txtContrasena.Location = new Point(273, 247);
+            txtContrasena.Margin = new Padding(3, 4, 3, 4);
             txtContrasena.Name = "txtContrasena";
-            txtContrasena.Size = new Size(287, 23);
+            txtContrasena.Size = new Size(327, 27);
             txtContrasena.TabIndex = 2;
             // 
             // btnIniciar
             // 
-            btnIniciar.Location = new Point(239, 313);
+            btnIniciar.Location = new Point(273, 417);
+            btnIniciar.Margin = new Padding(3, 4, 3, 4);
             btnIniciar.Name = "btnIniciar";
-            btnIniciar.Size = new Size(75, 23);
+            btnIniciar.Size = new Size(86, 31);
             btnIniciar.TabIndex = 3;
             btnIniciar.Text = "Iniciar";
             btnIniciar.UseVisualStyleBackColor = true;
@@ -80,24 +83,27 @@
             // 
             // btnRegistrar
             // 
-            btnRegistrar.Location = new Point(378, 313);
+            btnRegistrar.Location = new Point(432, 417);
+            btnRegistrar.Margin = new Padding(3, 4, 3, 4);
             btnRegistrar.Name = "btnRegistrar";
-            btnRegistrar.Size = new Size(75, 23);
+            btnRegistrar.Size = new Size(86, 31);
             btnRegistrar.TabIndex = 4;
             btnRegistrar.Text = "Registrar";
             btnRegistrar.UseVisualStyleBackColor = true;
+            btnRegistrar.Click += btnRegistrar_Click;
             // 
             // InicioSesion
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(726, 530);
+            ClientSize = new Size(830, 707);
             Controls.Add(btnRegistrar);
             Controls.Add(btnIniciar);
             Controls.Add(txtContrasena);
             Controls.Add(label1);
             Controls.Add(txtUsuario);
             Controls.Add(Usuario);
+            Margin = new Padding(3, 4, 3, 4);
             Name = "InicioSesion";
             Text = "Inicio Sesion";
             ResumeLayout(false);

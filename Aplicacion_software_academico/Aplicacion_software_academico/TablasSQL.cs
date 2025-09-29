@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using System.Data.SqlClient;
 using static Aplicacion_software_academico.TablasSQL;
 using System.IO;
+using System.ComponentModel.Design.Serialization;
 
 
 namespace Aplicacion_software_academico
@@ -42,7 +43,7 @@ namespace Aplicacion_software_academico
 
             public string validarUsuario(string correo, string contraseña)
             {
-                SqlCommand comando = new SqlCommand("SELECT * FROM Usuario WHERE correo = @correo", conexion.AbrirConexion());
+                SqlCommand comando = new SqlCommand("select count(*) from Usuario WHERE correo = @correo", conexion.AbrirConexion());
                 comando.Parameters.AddWithValue("@correo", correo);
 
 
@@ -75,6 +76,39 @@ namespace Aplicacion_software_academico
 
 
             }
+
+            public string registrarUsuario(string nombre, string correo, string contraseña, string rol)
+            {
+                try
+                {
+                    cmd = new SqlCommand("select * from Usuario where correo = @correo", conexion.AbrirConexion());
+
+                    cmd.Parameters.AddWithValue("@correo", correo);
+                    
+                    int count = (int)cmd.ExecuteScalar();
+
+                    if (count > 0)
+                    {
+                        return "Este correo ya esta registrado.";
+                    }
+
+                    SqlCommand comando = new SqlCommand("INSERT INTO Usuario (nombre, correo, contrasena, rol) VALUES (@nombre, @correo, @contrasena ,@rol)", conexion.AbrirConexion());
+                    comando.CommandType = CommandType.Text;
+                    comando.Parameters.AddWithValue("@nombre", nombre);
+                    comando.Parameters.AddWithValue("@correo", correo);
+                    comando.Parameters.AddWithValue("@contrasena", contrasena);
+                    comando.Parameters.AddWithValue("@rol", rol);
+                    comando.ExecuteNonQuery();
+                    return "Usuario registrado correctamente";
+
+                }
+                catch 
+                {
+                    return "Error al registrar Usuario";
+                }
+            }
+
+
 
         }
     }

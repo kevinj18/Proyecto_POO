@@ -45,5 +45,10 @@ namespace Aplicacion_software_academico
                 MessageBox.Show(validarUser);
             }
         }
+
+        private void btnRegistrar_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
