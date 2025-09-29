@@ -4,10 +4,15 @@ using System.Windows.Forms;
 
 namespace Aplicacion_software_academico
 {
+    public static class SesionActual
+    {
+        public static string Correo { get; set; }
+        public static string Rol { get; set; }
+    }
     public partial class InicioSesion : Form
     {
-        public static string UserActu { get; set; }
-        string connectionString = "Server=localhost\\SQLEXPRESS;Database=Sistema_Academico;Trusted_Connection=True;";
+        
+
         public InicioSesion()
         {
             InitializeComponent();
@@ -35,11 +40,32 @@ namespace Aplicacion_software_academico
 
             string validarUser = usuario.validarUsuario(Usuario, contraseña);
 
-            if (validarUser.Equals("Correcto"))
+            if (validarUser == "estudiante")
             {
-                MessageBox.Show("Inicio de sesión exitoso");
-                UserActu = txtUsuario.Text;
+                SesionActual.Correo = txtUsuario.Text;
+                SesionActual.Rol = "estudiante";
+
+                frm_Estudiantes formEstudiante = new frm_Estudiantes();
+                formEstudiante.Show();
+                this.Hide();
             }
+
+            //if (validarUser.Equals("estudiante"))
+            //{
+            //    MessageBox.Show("Inicio de sesión exitoso como Estudiante");
+            //    UserActu = txtUsuario.Text;
+
+            //    // abrir la interfaz de estudiante
+            //    frm_Estudiantes formEstudiante = new frm_Estudiantes();
+            //    formEstudiante.Show();
+
+            //    this.Hide();
+            //}
+            //if (validarUser.Equals("Correcto"))
+            //{
+            //    MessageBox.Show("Inicio de sesión exitoso");
+            //    UserActu = txtUsuario.Text;
+            //}
             else
             {
                 MessageBox.Show(validarUser);

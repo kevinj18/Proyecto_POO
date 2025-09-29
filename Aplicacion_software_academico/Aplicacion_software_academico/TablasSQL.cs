@@ -41,9 +41,11 @@ namespace Aplicacion_software_academico
             public string Rol { get => rol; set => rol = value; }
             public string Contrasena { get => contrasena; set => contrasena = value; }
 
+
+            // Valida si el usuario existe en la base de datos
             public string validarUsuario(string correo, string contraseña)
             {
-                SqlCommand comando = new SqlCommand("select count(*) from Usuario WHERE correo = @correo", conexion.AbrirConexion());
+                SqlCommand comando = new SqlCommand("select contrasena, rol from usuario where correo = @correo", conexion.AbrirConexion());
                 comando.Parameters.AddWithValue("@correo", correo);
 
 
@@ -54,9 +56,8 @@ namespace Aplicacion_software_academico
                         string Contraseña = reader["contrasena"].ToString();
                         if (Contraseña == contraseña)
                         {
-                            string rol = reader["rol"] as string ?? "estudiante";
-                            MessageBox.Show("Inicio de sesión correcto. Rol: " + rol);
-                            return "Correcto";
+                            string rol = reader["rol"].ToString();
+                            return rol;
                         }
                         else
                         {
@@ -76,7 +77,7 @@ namespace Aplicacion_software_academico
 
 
             }
-
+            // Registra un nuevo usuario en la base de datos
             public string registrarUsuario(string nombre, string correo, string contraseña, string rol)
             {
                 try
@@ -111,6 +112,465 @@ namespace Aplicacion_software_academico
 
 
         }
+
+        public class Estudiante
+        {
+            // Atributos
+            public int IdEstudiante { get; set; }
+            public int IdUsuario { get; set; }  
+            public string Nombre { get; set; }
+            public string Correo { get; set; }
+            public int Semestre { get; set; }
+
+            private cConexion conexion = new cConexion();
+            // Métodos
+            public Estudiante ObtenerPorId(int id)
+            {
+                Estudiante estudiante = null;
+
+                string query = @"select e.id_estudiante, u.id_usuario, u.nombre, u.correo, e.semestre
+                         from Estudiante e
+                         inner join Usuario u on e.id_usuario = u.id_usuario
+                         where e.id_estudiante = @id";
+
+                SqlCommand comando = new SqlCommand(query, conexion.AbrirConexion());
+                comando.Parameters.AddWithValue("@id", id);
+
+                using (SqlDataReader reader = comando.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        estudiante = new Estudiante
+                        {
+                            IdEstudiante = Convert.ToInt32(reader["id_estudiante"]),
+                            IdUsuario = Convert.ToInt32(reader["id_usuario"]),
+                            Nombre = reader["nombre"].ToString(),
+                            Correo = reader["correo"].ToString(),
+                            Semestre = Convert.ToInt32(reader["semestre"])
+                        };
+                    }
+                }
+
+                conexion.CerrarConexion();
+                return estudiante;
+            }
+
+            public List<Estudiante> ObtenerTodos()
+            {
+                List<Estudiante> lista = new List<Estudiante>();
+
+                string query = @"select e.id_estudiante, u.id_usuario, u.nombre, u.correo, e.semestre
+                         from Estudiante e
+                         inner join Usuario u on e.id_usuario = u.id_usuario";
+
+                SqlCommand comando = new SqlCommand(query, conexion.AbrirConexion());
+
+                using (SqlDataReader reader = comando.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        lista.Add(new Estudiante
+                        {
+                            IdEstudiante = Convert.ToInt32(reader["id_estudiante"]),
+                            IdUsuario = Convert.ToInt32(reader["id_usuario"]),
+                            Nombre = reader["nombre"].ToString(),
+                            Correo = reader["correo"].ToString(),
+                            Semestre = Convert.ToInt32(reader["semestre"])
+                        });
+                    }
+                }
+
+                conexion.CerrarConexion();
+                return lista;
+            }
+
+            public int ObtenerIdEstudiantePorCorreo(string correo)
+            {
+                int id = -1;
+
+                string query = @"select e.id_estudiante
+                     from estudiante e
+                     inner join usuario u on e.id_usuario = u.id_usuario
+                     where u.correo = @correo";
+
+                SqlCommand comando = new SqlCommand(query, conexion.AbrirConexion());
+                comando.Parameters.AddWithValue("@correo", correo);
+
+                object result = comando.ExecuteScalar();
+
+                if (result != null)
+                    id = Convert.ToInt32(result);
+
+                conexion.CerrarConexion();
+                return id;
+            }
+
+        }
+
+        public class Calificacion
+        {
+            public int IdCalificacion { get; set; }
+            public int IdEstudiante { get; set; }
+            public int IdAsignatura { get; set; }
+            public decimal Nota { get; set; }
+            public DateTime FechaRegistro { get; set; }
+
+            private cConexion conexion = new cConexion();
+
+            // obtener calificación por id
+            public Calificacion ObtenerPorId(int id)
+            {
+                Calificacion calificacion = null;
+
+                string query = @"select c.id_calificacion, c.id_estudiante, c.id_asignatura, 
+                                c.nota, c.fecha_registro
+                         from calificacion c
+                         where c.id_calificacion = @id";
+
+                SqlCommand comando = new SqlCommand(query, conexion.AbrirConexion());
+                comando.Parameters.AddWithValue("@id", id);
+
+                using (SqlDataReader reader = comando.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        calificacion = new Calificacion
+                        {
+                            IdCalificacion = Convert.ToInt32(reader["id_calificacion"]),
+                            IdEstudiante = Convert.ToInt32(reader["id_estudiante"]),
+                            IdAsignatura = Convert.ToInt32(reader["id_asignatura"]),
+                            Nota = Convert.ToDecimal(reader["nota"]),
+                            FechaRegistro = Convert.ToDateTime(reader["fecha_registro"])
+                        };
+                    }
+                }
+
+                conexion.CerrarConexion();
+                return calificacion;
+            }
+
+            // obtener todas las calificaciones de un estudiante
+            public List<Calificacion> ObtenerPorEstudiante(int idEstudiante)
+            {
+                List<Calificacion> lista = new List<Calificacion>();
+
+                string query = @"select c.id_calificacion, c.id_estudiante, c.id_asignatura, 
+                                c.nota, c.fecha_registro
+                         from calificacion c
+                         where c.id_estudiante = @idEstudiante";
+
+                SqlCommand comando = new SqlCommand(query, conexion.AbrirConexion());
+                comando.Parameters.AddWithValue("@idEstudiante", idEstudiante);
+
+                using (SqlDataReader reader = comando.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        lista.Add(new Calificacion
+                        {
+                            IdCalificacion = Convert.ToInt32(reader["id_calificacion"]),
+                            IdEstudiante = Convert.ToInt32(reader["id_estudiante"]),
+                            IdAsignatura = Convert.ToInt32(reader["id_asignatura"]),
+                            Nota = Convert.ToDecimal(reader["nota"]),
+                            FechaRegistro = Convert.ToDateTime(reader["fecha_registro"])
+                        });
+                    }
+                }
+
+                conexion.CerrarConexion();
+                return lista;
+            }
+
+            public List<Calificacion> ObtenerPorEstudianteYAsignatura(int idEstudiante, int? idAsignatura = null)
+            {
+                List<Calificacion> lista = new List<Calificacion>();
+
+                string query = @"select c.id_calificacion, c.id_estudiante, c.id_asignatura, 
+                            c.nota, c.fecha_registro
+                     from calificacion c
+                     where c.id_estudiante = @idEstudiante";
+
+                if (idAsignatura.HasValue)
+                {
+                    query += " and c.id_asignatura = @idAsignatura";
+                }
+
+                SqlCommand comando = new SqlCommand(query, conexion.AbrirConexion());
+                comando.Parameters.AddWithValue("@idEstudiante", idEstudiante);
+
+                if (idAsignatura.HasValue)
+                    comando.Parameters.AddWithValue("@idAsignatura", idAsignatura.Value);
+
+                using (SqlDataReader reader = comando.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        lista.Add(new Calificacion
+                        {
+                            IdCalificacion = Convert.ToInt32(reader["id_calificacion"]),
+                            IdEstudiante = Convert.ToInt32(reader["id_estudiante"]),
+                            IdAsignatura = Convert.ToInt32(reader["id_asignatura"]),
+                            Nota = Convert.ToDecimal(reader["nota"]),
+                            FechaRegistro = Convert.ToDateTime(reader["fecha_registro"])
+                        });
+                    }
+                }
+
+                conexion.CerrarConexion();
+                return lista;
+            }
+
+            // obtener todas las calificaciones
+            public List<Calificacion> ObtenerTodos()
+            {
+                List<Calificacion> lista = new List<Calificacion>();
+
+                string query = @"select c.id_calificacion, c.id_estudiante, c.id_asignatura, 
+                                c.nota, c.fecha_registro
+                         from calificacion c";
+
+                SqlCommand comando = new SqlCommand(query, conexion.AbrirConexion());
+
+                using (SqlDataReader reader = comando.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        lista.Add(new Calificacion
+                        {
+                            IdCalificacion = Convert.ToInt32(reader["id_calificacion"]),
+                            IdEstudiante = Convert.ToInt32(reader["id_estudiante"]),
+                            IdAsignatura = Convert.ToInt32(reader["id_asignatura"]),
+                            Nota = Convert.ToDecimal(reader["nota"]),
+                            FechaRegistro = Convert.ToDateTime(reader["fecha_registro"])
+                        });
+                    }
+                }
+
+                conexion.CerrarConexion();
+                return lista;
+            }
+        }
+
+
+        public class Asistencia
+        {
+            public int IdAsistencia { get; set; }
+            public int IdEstudiante { get; set; }
+            public int IdAsignatura { get; set; }
+            public DateTime Fecha { get; set; }
+            public string Estado { get; set; } // "Presente", "Ausente", "Tarde"
+
+            private cConexion conexion = new cConexion();
+
+            // obtener asistencia por id
+            public Asistencia ObtenerPorId(int id)
+            {
+                Asistencia asistencia = null;
+
+                string query = @"select a.id_asistencia, a.id_estudiante, a.id_asignatura, 
+                                a.fecha, a.estado
+                         from asistencia a
+                         where a.id_asistencia = @id";
+
+                SqlCommand comando = new SqlCommand(query, conexion.AbrirConexion());
+                comando.Parameters.AddWithValue("@id", id);
+
+                using (SqlDataReader reader = comando.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        asistencia = new Asistencia
+                        {
+                            IdAsistencia = Convert.ToInt32(reader["id_asistencia"]),
+                            IdEstudiante = Convert.ToInt32(reader["id_estudiante"]),
+                            IdAsignatura = Convert.ToInt32(reader["id_asignatura"]),
+                            Fecha = Convert.ToDateTime(reader["fecha"]),
+                            Estado = reader["estado"].ToString()
+                        };
+                    }
+                }
+
+                conexion.CerrarConexion();
+                return asistencia;
+            }
+
+            // obtener todas las asistencias de un estudiante
+            public List<Asistencia> ObtenerPorEstudiante(int idEstudiante)
+            {
+                List<Asistencia> lista = new List<Asistencia>();
+
+                string query = @"select a.id_asistencia, a.id_estudiante, a.id_asignatura, 
+                                a.fecha, a.estado
+                         from asistencia a
+                         where a.id_estudiante = @idEstudiante";
+
+                SqlCommand comando = new SqlCommand(query, conexion.AbrirConexion());
+                comando.Parameters.AddWithValue("@idEstudiante", idEstudiante);
+
+                using (SqlDataReader reader = comando.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        lista.Add(new Asistencia
+                        {
+                            IdAsistencia = Convert.ToInt32(reader["id_asistencia"]),
+                            IdEstudiante = Convert.ToInt32(reader["id_estudiante"]),
+                            IdAsignatura = Convert.ToInt32(reader["id_asignatura"]),
+                            Fecha = Convert.ToDateTime(reader["fecha"]),
+                            Estado = reader["estado"].ToString()
+                        });
+                    }
+                }
+
+                conexion.CerrarConexion();
+                return lista;
+            }
+
+            // obtener todas las asistencias
+            public List<Asistencia> ObtenerTodos()
+            {
+                List<Asistencia> lista = new List<Asistencia>();
+
+                string query = @"select a.id_asistencia, a.id_estudiante, a.id_asignatura, 
+                                a.fecha, a.estado
+                         from asistencia a";
+
+                SqlCommand comando = new SqlCommand(query, conexion.AbrirConexion());
+
+                using (SqlDataReader reader = comando.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        lista.Add(new Asistencia
+                        {
+                            IdAsistencia = Convert.ToInt32(reader["id_asistencia"]),
+                            IdEstudiante = Convert.ToInt32(reader["id_estudiante"]),
+                            IdAsignatura = Convert.ToInt32(reader["id_asignatura"]),
+                            Fecha = Convert.ToDateTime(reader["fecha"]),
+                            Estado = reader["estado"].ToString()
+                        });
+                    }
+                }
+
+                conexion.CerrarConexion();
+                return lista;
+            }
+        }
+
+
+        public class Solicitud
+        {
+            public int IdSolicitud { get; set; }
+            public int IdEstudiante { get; set; }
+            public int IdAsignatura { get; set; }
+            public string Tipo { get; set; } // "Revision Nota" | "Revision Asistencia"
+            public string Descripcion { get; set; }
+            public string Estado { get; set; } // "Pendiente" | "Aprobada" | "Rechazada"
+            public DateTime Fecha { get; set; }
+
+            private cConexion conexion = new cConexion();
+
+            // obtener solicitud por id
+            public Solicitud ObtenerPorId(int id)
+            {
+                Solicitud solicitud = null;
+
+                string query = @"select s.id_solicitud, s.id_estudiante, s.id_asignatura, 
+                                s.tipo, s.descripcion, s.estado, s.fecha
+                         from solicitud s
+                         where s.id_solicitud = @id";
+
+                SqlCommand comando = new SqlCommand(query, conexion.AbrirConexion());
+                comando.Parameters.AddWithValue("@id", id);
+
+                using (SqlDataReader reader = comando.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        solicitud = new Solicitud
+                        {
+                            IdSolicitud = Convert.ToInt32(reader["id_solicitud"]),
+                            IdEstudiante = Convert.ToInt32(reader["id_estudiante"]),
+                            IdAsignatura = Convert.ToInt32(reader["id_asignatura"]),
+                            Tipo = reader["tipo"].ToString(),
+                            Descripcion = reader["descripcion"].ToString(),
+                            Estado = reader["estado"].ToString(),
+                            Fecha = Convert.ToDateTime(reader["fecha"])
+                        };
+                    }
+                }
+
+                conexion.CerrarConexion();
+                return solicitud;
+            }
+
+            // obtener todas las solicitudes de un estudiante
+            public List<Solicitud> ObtenerPorEstudiante(int idEstudiante)
+            {
+                List<Solicitud> lista = new List<Solicitud>();
+
+                string query = @"select s.id_solicitud, s.id_estudiante, s.id_asignatura, 
+                                s.tipo, s.descripcion, s.estado, s.fecha
+                         from solicitud s
+                         where s.id_estudiante = @idEstudiante";
+
+                SqlCommand comando = new SqlCommand(query, conexion.AbrirConexion());
+                comando.Parameters.AddWithValue("@idEstudiante", idEstudiante);
+
+                using (SqlDataReader reader = comando.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        lista.Add(new Solicitud
+                        {
+                            IdSolicitud = Convert.ToInt32(reader["id_solicitud"]),
+                            IdEstudiante = Convert.ToInt32(reader["id_estudiante"]),
+                            IdAsignatura = Convert.ToInt32(reader["id_asignatura"]),
+                            Tipo = reader["tipo"].ToString(),
+                            Descripcion = reader["descripcion"].ToString(),
+                            Estado = reader["estado"].ToString(),
+                            Fecha = Convert.ToDateTime(reader["fecha"])
+                        });
+                    }
+                }
+
+                conexion.CerrarConexion();
+                return lista;
+            }
+
+            // obtener todas las solicitudes
+            public List<Solicitud> ObtenerTodos()
+            {
+                List<Solicitud> lista = new List<Solicitud>();
+
+                string query = @"select s.id_solicitud, s.id_estudiante, s.id_asignatura, 
+                                s.tipo, s.descripcion, s.estado, s.fecha from solicitud s";
+
+                SqlCommand comando = new SqlCommand(query, conexion.AbrirConexion());
+
+                using (SqlDataReader reader = comando.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        lista.Add(new Solicitud
+                        {
+                            IdSolicitud = Convert.ToInt32(reader["id_solicitud"]),
+                            IdEstudiante = Convert.ToInt32(reader["id_estudiante"]),
+                            IdAsignatura = Convert.ToInt32(reader["id_asignatura"]),
+                            Tipo = reader["tipo"].ToString(),
+                            Descripcion = reader["descripcion"].ToString(),
+                            Estado = reader["estado"].ToString(),
+                            Fecha = Convert.ToDateTime(reader["fecha"])
+                        });
+                    }
+                }
+
+                conexion.CerrarConexion();
+                return lista;
+            }
+        }
+
+
     }
 
 }
