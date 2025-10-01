@@ -47,10 +47,10 @@ namespace Aplicacion_software_academico
             {
                 string query = "select u.contrasena, u.rol, e.id_estudiante from usuario u left join estudiante e on u.id_usuario = e.id_usuario where u.correo = @correo";
 
+
                 SqlCommand comando = new SqlCommand(query, conexion.AbrirConexion());
 
                 comando.Parameters.AddWithValue("@correo", correo);
-
 
                 using (SqlDataReader reader = comando.ExecuteReader())
                 {
@@ -61,6 +61,16 @@ namespace Aplicacion_software_academico
                         if (contrasenaBD == contraseña)
                         {
                             string rol = reader["rol"].ToString();
+
+                            // Guardar la sesión
+                            SesionActual.Correo = correo;
+                            SesionActual.Rol = rol;
+
+                            if (rol == "estudiante" && reader["id_estudiante"] != DBNull.Value)
+                            {
+                                SesionActual.IdEstudiante = Convert.ToInt32(reader["id_estudiante"]);
+                            }
+
                             return rol;
                         }
                         else
@@ -71,7 +81,6 @@ namespace Aplicacion_software_academico
                     else
                     {
                         return "Usuario no encontrado";
-
                     }
 
 
