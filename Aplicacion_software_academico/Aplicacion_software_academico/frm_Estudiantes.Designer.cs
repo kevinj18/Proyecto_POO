@@ -51,6 +51,7 @@
             btnConsultAsistencia.TabIndex = 1;
             btnConsultAsistencia.Text = "Consultar Asistencia";
             btnConsultAsistencia.UseVisualStyleBackColor = true;
+            btnConsultAsistencia.Click += btnConsultAsistencia_Click;
             // 
             // btnSoliRevision
             // 

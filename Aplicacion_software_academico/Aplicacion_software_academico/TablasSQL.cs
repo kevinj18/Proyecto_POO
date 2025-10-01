@@ -115,7 +115,7 @@ namespace Aplicacion_software_academico
 
         public class Estudiante
         {
-            // Atributos
+            
             public int IdEstudiante { get; set; }
             public int IdUsuario { get; set; }  
             public string Nombre { get; set; }
@@ -392,6 +392,45 @@ namespace Aplicacion_software_academico
 
                 conexion.CerrarConexion();
                 return asistencia;
+            }
+
+            public List<Asistencia> ObtenerPorEstudianteYAsignatura(int idEstudiante, int? idAsignatura = null)
+            {
+                List<Asistencia> lista = new List<Asistencia>();
+
+                string query = @"select a.id_asistencia, a.id_estudiante, a.id_asignatura, 
+                                a.fecha, a.estado
+                         from asistencia a
+                         where a.id_estudiante = @idEstudiante";
+
+                if (idAsignatura.HasValue)
+                {
+                    query += " and a.id_asignatura = @idAsignatura";
+                }
+
+                SqlCommand comando = new SqlCommand(query, conexion.AbrirConexion());
+                comando.Parameters.AddWithValue("@idEstudiante", idEstudiante);
+
+                if (idAsignatura.HasValue)
+                    comando.Parameters.AddWithValue("@idAsignatura", idAsignatura.Value);
+
+                using (SqlDataReader reader = comando.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        lista.Add(new Asistencia
+                        {
+                            IdAsistencia = Convert.ToInt32(reader["id_asistencia"]),
+                            IdEstudiante = Convert.ToInt32(reader["id_estudiante"]),
+                            IdAsignatura = Convert.ToInt32(reader["id_asignatura"]),
+                            Fecha = Convert.ToDateTime(reader["fecha"]),
+                            Estado = reader["estado"].ToString()
+                        });
+                    }
+                }
+
+                conexion.CerrarConexion();
+                return lista;
             }
 
             // obtener todas las asistencias de un estudiante
