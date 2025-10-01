@@ -45,7 +45,10 @@ namespace Aplicacion_software_academico
             // Valida si el usuario existe en la base de datos
             public string validarUsuario(string correo, string contraseña)
             {
-                SqlCommand comando = new SqlCommand("select contrasena, rol from usuario where correo = @correo", conexion.AbrirConexion());
+                string query = "select u.contrasena, u.rol, e.id_estudiante from usuario u left join estudiante e on u.id_usuario = e.id_usuario where u.correo = @correo";
+
+                SqlCommand comando = new SqlCommand(query, conexion.AbrirConexion());
+
                 comando.Parameters.AddWithValue("@correo", correo);
 
 
@@ -53,20 +56,11 @@ namespace Aplicacion_software_academico
                 {
                     if (reader.Read())
                     {
-                        string Contraseña = reader["contrasena"].ToString();
-                        if (Contraseña == contraseña)
+                        string contrasenaBD = reader["contrasena"].ToString();
+
+                        if (contrasenaBD == contraseña)
                         {
                             string rol = reader["rol"].ToString();
-
-                            // Guardar la sesión
-                            SesionActual.Correo = correo;
-                            SesionActual.Rol = rol;
-
-                            if (rol == "estudiante" && reader["id_estudiante"] != DBNull.Value)
-                            {
-                                SesionActual.IdEstudiante = Convert.ToInt32(reader["id_estudiante"]);
-                            }
-
                             return rol;
                         }
                         else
@@ -79,15 +73,14 @@ namespace Aplicacion_software_academico
                         return "Usuario no encontrado";
 
                     }
+
+
+
+
                 }
 
 
-
-
             }
-
-
-
             // Registra un nuevo usuario en la base de datos
             public string registrarUsuario(string nombre, string correo, string contraseña, string rol)
             {
@@ -96,7 +89,7 @@ namespace Aplicacion_software_academico
                     cmd = new SqlCommand("select * from Usuario where correo = @correo", conexion.AbrirConexion());
 
                     cmd.Parameters.AddWithValue("@correo", correo);
-
+                    
                     int count = (int)cmd.ExecuteScalar();
 
                     if (count > 0)
@@ -114,24 +107,21 @@ namespace Aplicacion_software_academico
                     return "Usuario registrado correctamente";
 
                 }
-                catch
+                catch 
                 {
                     return "Error al registrar Usuario";
                 }
-
             }
+
+
 
         }
 
-
-
-
-
         public class Estudiante
         {
-
+            
             public int IdEstudiante { get; set; }
-            public int IdUsuario { get; set; }
+            public int IdUsuario { get; set; }  
             public string Nombre { get; set; }
             public string Correo { get; set; }
             public int Semestre { get; set; }
