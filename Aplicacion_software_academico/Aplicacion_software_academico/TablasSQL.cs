@@ -87,7 +87,7 @@ namespace Aplicacion_software_academico
             }
 
 
-            }
+
             // Registra un nuevo usuario en la base de datos
             public string registrarUsuario(string nombre, string correo, string contraseña, string rol)
             {
@@ -125,7 +125,7 @@ namespace Aplicacion_software_academico
 
 
 
-        }
+
 
         public class Estudiante
         {
@@ -621,7 +621,9 @@ namespace Aplicacion_software_academico
                 conexion.CerrarConexion();
                 return lista;
             }
+
         }
+    
 
 
     }
