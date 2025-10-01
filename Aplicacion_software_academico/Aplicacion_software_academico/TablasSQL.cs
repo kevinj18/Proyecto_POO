@@ -184,7 +184,6 @@ namespace Aplicacion_software_academico
                 return lista;
             }
 
-            public int ObtenerIdEstudiantePorCorreo(string correo)
             {
                 int id = -1;
 
