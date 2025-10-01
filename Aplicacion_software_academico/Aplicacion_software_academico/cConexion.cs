@@ -19,7 +19,7 @@ namespace Aplicacion_software_academico
         //{
         //    SqlConnection conexion = new SqlConnection(cadena);
         //    try
-        //    {
+        //    {holaaa
         //        conexion.Open();
         //        Console.WriteLine("Conexión establecida con SQL Server");
         //    }
