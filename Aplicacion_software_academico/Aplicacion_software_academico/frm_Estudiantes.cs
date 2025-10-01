@@ -86,5 +86,40 @@ namespace Aplicacion_software_academico
                     + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        private void frm_Estudiantes_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnSoliRevision_Click(object sender, EventArgs e)
+        {
+            frm_SolicitudRevisioncs solicitudForm = new frm_SolicitudRevisioncs();
+
+            solicitudForm.Show();
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            try
+            {
+                // Verificamos que el estudiante esté en sesión
+                if (SesionActual.Rol == "estudiante" && SesionActual.IdEstudiante > 0)
+                {
+                    frm_ConsultarSolicitudes frm = new frm_ConsultarSolicitudes();
+                    frm.Show();
+                }
+                else
+                {
+                    MessageBox.Show("Solo los estudiantes pueden consultar solicitudes.",
+                                    "Acceso denegado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al abrir la ventana de solicitudes: " + ex.Message,
+                                "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
     }
 }

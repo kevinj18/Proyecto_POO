@@ -8,6 +8,7 @@ namespace Aplicacion_software_academico
     {
         public static string Correo { get; set; }
         public static string Rol { get; set; }
+        public static int IdEstudiante { get; set; }
     }
     public partial class InicioSesion : Form
     {
@@ -35,6 +36,7 @@ namespace Aplicacion_software_academico
         private void btnIniciar_Click(object sender, EventArgs e)
         {
             TablasSQL.Usuario usuario = new TablasSQL.Usuario();
+            //TablasSQL.Estudiante estudiante = new TablasSQL.Estudiante();
             string Usuario = txtUsuario.Text;
             string contraseña = txtContrasena.Text;
 
@@ -44,7 +46,7 @@ namespace Aplicacion_software_academico
             {
                 SesionActual.Correo = txtUsuario.Text;
                 SesionActual.Rol = "estudiante";
-
+                
                 frm_Estudiantes formEstudiante = new frm_Estudiantes();
                 formEstudiante.Show();
                 this.Hide();

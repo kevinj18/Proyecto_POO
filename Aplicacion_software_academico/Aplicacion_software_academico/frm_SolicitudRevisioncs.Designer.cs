@@ -32,10 +32,10 @@
             label2 = new Label();
             label3 = new Label();
             label4 = new Label();
-            textBox1 = new TextBox();
-            textBox2 = new TextBox();
-            textBox3 = new TextBox();
-            comboBox1 = new ComboBox();
+            txtIdEstudiante = new TextBox();
+            txtIdAsignatura = new TextBox();
+            txtDescripcion = new TextBox();
+            cmbTipo = new ComboBox();
             btnCrear = new Button();
             SuspendLayout();
             // 
@@ -75,61 +75,63 @@
             label4.TabIndex = 3;
             label4.Text = "Descripción";
             // 
-            // textBox1
+            // txtIdEstudiante
             // 
-            textBox1.Location = new Point(172, 37);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(219, 23);
-            textBox1.TabIndex = 4;
+            txtIdEstudiante.Location = new Point(172, 37);
+            txtIdEstudiante.Name = "txtIdEstudiante";
+            txtIdEstudiante.Size = new Size(219, 23);
+            txtIdEstudiante.TabIndex = 4;
             // 
-            // textBox2
+            // txtIdAsignatura
             // 
-            textBox2.Location = new Point(172, 107);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(219, 23);
-            textBox2.TabIndex = 5;
+            txtIdAsignatura.Location = new Point(172, 107);
+            txtIdAsignatura.Name = "txtIdAsignatura";
+            txtIdAsignatura.Size = new Size(219, 23);
+            txtIdAsignatura.TabIndex = 5;
             // 
-            // textBox3
+            // txtDescripcion
             // 
-            textBox3.Location = new Point(172, 230);
-            textBox3.Multiline = true;
-            textBox3.Name = "textBox3";
-            textBox3.Size = new Size(219, 23);
-            textBox3.TabIndex = 6;
+            txtDescripcion.Location = new Point(172, 230);
+            txtDescripcion.Multiline = true;
+            txtDescripcion.Name = "txtDescripcion";
+            txtDescripcion.Size = new Size(219, 95);
+            txtDescripcion.TabIndex = 6;
             // 
-            // comboBox1
+            // cmbTipo
             // 
-            comboBox1.FormattingEnabled = true;
-            comboBox1.Location = new Point(172, 169);
-            comboBox1.Name = "comboBox1";
-            comboBox1.Size = new Size(219, 23);
-            comboBox1.TabIndex = 7;
+            cmbTipo.FormattingEnabled = true;
+            cmbTipo.Location = new Point(172, 169);
+            cmbTipo.Name = "cmbTipo";
+            cmbTipo.Size = new Size(219, 23);
+            cmbTipo.TabIndex = 7;
             // 
             // btnCrear
             // 
-            btnCrear.Location = new Point(264, 331);
+            btnCrear.Location = new Point(246, 331);
             btnCrear.Name = "btnCrear";
             btnCrear.Size = new Size(75, 23);
             btnCrear.TabIndex = 8;
             btnCrear.Text = "Crear";
             btnCrear.UseVisualStyleBackColor = true;
+            btnCrear.Click += btnCrear_Click;
             // 
             // frm_SolicitudRevisioncs
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(615, 507);
+            ClientSize = new Size(532, 411);
             Controls.Add(btnCrear);
-            Controls.Add(comboBox1);
-            Controls.Add(textBox3);
-            Controls.Add(textBox2);
-            Controls.Add(textBox1);
+            Controls.Add(cmbTipo);
+            Controls.Add(txtDescripcion);
+            Controls.Add(txtIdAsignatura);
+            Controls.Add(txtIdEstudiante);
             Controls.Add(label4);
             Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(label1);
             Name = "frm_SolicitudRevisioncs";
             Text = "frm_SolicitudRevisioncs";
+            Load += frm_SolicitudRevisioncs_Load;
             ResumeLayout(false);
             PerformLayout();
         }
@@ -140,10 +142,10 @@
         private Label label2;
         private Label label3;
         private Label label4;
-        private TextBox textBox1;
-        private TextBox textBox2;
-        private TextBox textBox3;
-        private ComboBox comboBox1;
+        private TextBox txtIdEstudiante;
+        private TextBox txtIdAsignatura;
+        private TextBox txtDescripcion;
+        private ComboBox cmbTipo;
         private Button btnCrear;
     }
 }

@@ -31,6 +31,7 @@
             btnConsutNota = new Button();
             btnConsultAsistencia = new Button();
             btnSoliRevision = new Button();
+            btnConsultRevision = new Button();
             SuspendLayout();
             // 
             // btnConsutNota
@@ -61,17 +62,30 @@
             btnSoliRevision.TabIndex = 2;
             btnSoliRevision.Text = "Solicitud de Revisión";
             btnSoliRevision.UseVisualStyleBackColor = true;
+            btnSoliRevision.Click += btnSoliRevision_Click;
+            // 
+            // btnConsultRevision
+            // 
+            btnConsultRevision.Location = new Point(12, 373);
+            btnConsultRevision.Name = "btnConsultRevision";
+            btnConsultRevision.Size = new Size(131, 73);
+            btnConsultRevision.TabIndex = 3;
+            btnConsultRevision.Text = "Consultar Revisión";
+            btnConsultRevision.UseVisualStyleBackColor = true;
+            btnConsultRevision.Click += button1_Click_1;
             // 
             // frm_Estudiantes
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(898, 568);
+            Controls.Add(btnConsultRevision);
             Controls.Add(btnSoliRevision);
             Controls.Add(btnConsultAsistencia);
             Controls.Add(btnConsutNota);
             Name = "frm_Estudiantes";
             Text = "frm_Estudiantes";
+            Load += frm_Estudiantes_Load;
             ResumeLayout(false);
         }
 
@@ -80,5 +94,6 @@
         private Button btnConsutNota;
         private Button btnConsultAsistencia;
         private Button btnSoliRevision;
+        private Button btnConsultRevision;
     }
 }
