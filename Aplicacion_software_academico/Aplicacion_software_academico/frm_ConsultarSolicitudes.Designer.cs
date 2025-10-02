@@ -30,34 +30,51 @@
         {
             dgvSolicitudes = new DataGridView();
             Solicitudes = new Label();
+            label1 = new Label();
             ((System.ComponentModel.ISupportInitialize)dgvSolicitudes).BeginInit();
             SuspendLayout();
             // 
             // dgvSolicitudes
             // 
             dgvSolicitudes.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvSolicitudes.Location = new Point(56, 94);
+            dgvSolicitudes.Location = new Point(64, 125);
+            dgvSolicitudes.Margin = new Padding(3, 4, 3, 4);
             dgvSolicitudes.Name = "dgvSolicitudes";
-            dgvSolicitudes.Size = new Size(817, 436);
+            dgvSolicitudes.RowHeadersWidth = 51;
+            dgvSolicitudes.Size = new Size(934, 581);
             dgvSolicitudes.TabIndex = 0;
             dgvSolicitudes.CellContentClick += dgvSolicitudes_CellContentClick;
             // 
             // Solicitudes
             // 
             Solicitudes.AutoSize = true;
-            Solicitudes.Location = new Point(56, 58);
+            Solicitudes.Font = new Font("Segoe UI", 12F, FontStyle.Italic, GraphicsUnit.Point, 0);
+            Solicitudes.Location = new Point(64, 77);
             Solicitudes.Name = "Solicitudes";
-            Solicitudes.Size = new Size(64, 15);
+            Solicitudes.Size = new Size(107, 28);
             Solicitudes.TabIndex = 1;
-            Solicitudes.Text = "Solicitudes";
+            Solicitudes.Text = "Solicitudes:";
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Stencil", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label1.Location = new Point(344, 20);
+            label1.Name = "label1";
+            label1.Size = new Size(356, 35);
+            label1.TabIndex = 2;
+            label1.Text = "Consulta solicitudes";
             // 
             // frm_ConsultarSolicitudes
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(918, 557);
+            BackColor = SystemColors.ControlLightLight;
+            ClientSize = new Size(1049, 743);
+            Controls.Add(label1);
             Controls.Add(Solicitudes);
             Controls.Add(dgvSolicitudes);
+            Margin = new Padding(3, 4, 3, 4);
             Name = "frm_ConsultarSolicitudes";
             Text = "frm_ConsultarSolicitudes";
             Load += frm_ConsultarSolicitudes_Load;
@@ -70,5 +87,6 @@
 
         private DataGridView dgvSolicitudes;
         private Label Solicitudes;
+        private Label label1;
     }
 }
