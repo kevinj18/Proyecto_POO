@@ -45,7 +45,7 @@ namespace Aplicacion_software_academico
             // Valida si el usuario existe en la base de datos
             public string validarUsuario(string correo, string contraseña)
             {
-                string query = "select u.contrasena, u.rol, e.id_estudiante from usuario u left join estudiante e on u.id_usuario = e.id_usuario where u.correo = @correo";
+                string query = @"select u.contrasena, u.rol, e.id_estudiante, p.id_profesor from usuario u left join estudiante e on u.id_usuario = e.id_usuario left join profesor p on u.id_usuario = p.id_usuario where u.correo = @correo";
 
 
                 SqlCommand comando = new SqlCommand(query, conexion.AbrirConexion());
@@ -69,6 +69,10 @@ namespace Aplicacion_software_academico
                             if (rol == "estudiante" && reader["id_estudiante"] != DBNull.Value)
                             {
                                 SesionActual.IdEstudiante = Convert.ToInt32(reader["id_estudiante"]);
+                            }
+                            else if (rol == "profesor" && reader["id_profesor"] != DBNull.Value)
+                            {
+                                SesionActual.IdProfesor = Convert.ToInt32(reader["id_profesor"]);
                             }
 
                             return rol;
@@ -168,6 +172,27 @@ namespace Aplicacion_software_academico
                 return estudiante;
             }
 
+            public DataTable ObtenerEstudiantesPorAsignatura(int idAsignatura)
+            {
+                string query = @"
+                    select e.id_estudiante, 
+                    u.nombre as nombrecompleto
+                    from Estudiante e
+                    inner join Usuario u on e.id_usuario = u.id_usuario
+                    inner join Estudiante_Asignatura ea on e.id_estudiante = ea.id_estudiante
+                    where ea.id_asignatura = @idAsignatura";
+
+                SqlCommand comando = new SqlCommand(query, conexion.AbrirConexion());
+                comando.Parameters.AddWithValue("@idAsignatura", idAsignatura);
+
+                SqlDataAdapter da = new SqlDataAdapter(comando);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+
+                conexion.CerrarConexion();
+                return dt;
+            }
+
             public List<Estudiante> ObtenerTodos()
             {
                 List<Estudiante> lista = new List<Estudiante>();
@@ -229,6 +254,40 @@ namespace Aplicacion_software_academico
             public DateTime FechaRegistro { get; set; }
 
             private cConexion conexion = new cConexion();
+
+
+            public DataTable ObtenerNotasPorEstudianteYAsignatura(int idEstudiante, int idAsignatura)
+            {
+                string query = @"
+                select id_calificacion, nota, fecha_registro
+                from calificacion
+                where id_estudiante = @idEstudiante and id_asignatura = @idAsignatura";
+
+                SqlCommand comando = new SqlCommand(query, conexion.AbrirConexion());
+                comando.Parameters.AddWithValue("@idEstudiante", idEstudiante);
+                comando.Parameters.AddWithValue("@idAsignatura", idAsignatura);
+
+                SqlDataAdapter da = new SqlDataAdapter(comando);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+
+                conexion.CerrarConexion();
+                return dt;
+            }
+
+            public bool ModificarNota(int idCalificacion, decimal nuevaNota)
+            {
+                string query = "update calificacion set nota = @nuevaNota, fecha_registro = getdate() where id_calificacion = @idCalificacion";
+
+                SqlCommand comando = new SqlCommand(query, conexion.AbrirConexion());
+                comando.Parameters.AddWithValue("@nuevaNota", nuevaNota);
+                comando.Parameters.AddWithValue("@idCalificacion", idCalificacion);
+
+                int filas = comando.ExecuteNonQuery();
+                conexion.CerrarConexion();
+
+                return filas > 0;
+            }
 
             // obtener calificación por id
             public Calificacion ObtenerPorId(int id)
@@ -375,6 +434,41 @@ namespace Aplicacion_software_academico
 
             private cConexion conexion = new cConexion();
 
+            public DataTable ObtenerAsistenciasPorEstudianteYAsignatura(int idEstudiante, int idAsignatura)
+            {
+                string query = @"
+                select id_asistencia, fecha, estado
+                from Asistencia
+                where id_estudiante = @idEstudiante and id_asignatura = @idAsignatura";
+
+                SqlCommand comando = new SqlCommand(query, conexion.AbrirConexion());
+                comando.Parameters.AddWithValue("@idEstudiante", idEstudiante);
+                comando.Parameters.AddWithValue("@idAsignatura", idAsignatura);
+
+                SqlDataAdapter da = new SqlDataAdapter(comando);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+
+                conexion.CerrarConexion();
+                return dt;
+            }
+
+            public bool ModificarAsistencia(int idAsistencia, string nuevoEstado)
+            {
+                string query = "update Asistencia set estado = @nuevoEstado where id_asistencia = @idAsistencia";
+
+                SqlCommand comando = new SqlCommand(query, conexion.AbrirConexion());
+                comando.Parameters.AddWithValue("@nuevoEstado", nuevoEstado);
+                comando.Parameters.AddWithValue("@idAsistencia", idAsistencia);
+
+                int filas = comando.ExecuteNonQuery();
+                conexion.CerrarConexion();
+
+                return filas > 0;
+            }
+
+
+
             // obtener asistencia por id
             public Asistencia ObtenerPorId(int id)
             {
@@ -507,6 +601,24 @@ namespace Aplicacion_software_academico
                 conexion.CerrarConexion();
                 return lista;
             }
+
+            public bool RegistrarAsistencia(Asistencia asistencia)
+            {
+                string query = @"
+                insert into asistencia (id_estudiante, id_asignatura, fecha, estado)
+                values (@id_estudiante, @id_asignatura, @fecha, @estado)";
+
+                SqlCommand comando = new SqlCommand(query, conexion.AbrirConexion());
+                comando.Parameters.AddWithValue("@id_estudiante", asistencia.IdEstudiante);
+                comando.Parameters.AddWithValue("@id_asignatura", asistencia.IdAsignatura);
+                comando.Parameters.AddWithValue("@fecha", asistencia.Fecha);
+                comando.Parameters.AddWithValue("@estado", asistencia.Estado);
+
+                int result = comando.ExecuteNonQuery();
+                conexion.CerrarConexion();
+
+                return result > 0;
+            }
         }
 
 
@@ -521,6 +633,41 @@ namespace Aplicacion_software_academico
             public DateTime Fecha { get; set; }
 
             private cConexion conexion = new cConexion();
+
+
+            public DataTable ObtenerSolicitudesPendientes()
+            {
+                string query = @"
+                select id_solicitud, id_estudiante, id_asignatura, tipo, descripcion, estado, fecha
+                from Solicitud
+                where estado = 'Pendiente'";
+
+                SqlCommand comando = new SqlCommand(query, conexion.AbrirConexion());
+
+                SqlDataAdapter da = new SqlDataAdapter(comando);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+
+                conexion.CerrarConexion();
+                return dt;
+            }
+
+            public void MarcarSolicitud(int idSolicitud, string nuevoEstado)
+            {
+                string query = @"update Solicitud
+                     set estado = @estado
+                     where id_solicitud = @idSolicitud";
+
+                SqlCommand comando = new SqlCommand(query, conexion.AbrirConexion());
+                comando.Parameters.AddWithValue("@estado", nuevoEstado);
+                comando.Parameters.AddWithValue("@idSolicitud", idSolicitud);
+
+                comando.ExecuteNonQuery();
+
+                conexion.CerrarConexion();
+            }
+
+
 
             // obtener solicitud por id
             public Solicitud ObtenerPorId(int id)
@@ -622,7 +769,55 @@ namespace Aplicacion_software_academico
             }
 
         }
-    
+
+        public class Profesor
+        {   
+            cConexion conexion = new cConexion();
+            public int IdProfesor { get; set; }
+            public int IdUsuario { get; set; }
+            public string Especialidad { get; set; }
+
+            public Profesor(int idProfesor)
+            {
+                IdProfesor = idProfesor;
+            }
+            public Profesor()
+            {
+            }
+
+            public DataTable ObtenerAsignaturas()
+            {
+                DataTable dt = new DataTable();
+                try
+                {
+                    string query = @"
+                select id_asignatura, nombre
+                from asignatura
+                where id_profesor = @idProfesor";
+
+                    using (SqlCommand cmd = new SqlCommand(query, conexion.AbrirConexion()))
+                    {
+                        cmd.Parameters.AddWithValue("@idProfesor", this.IdProfesor);
+                        SqlDataAdapter da = new SqlDataAdapter(cmd);
+                        da.Fill(dt);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("error al obtener asignaturas: " + ex.Message);
+                }
+                finally
+                {
+                    conexion.CerrarConexion();
+                }
+                return dt;
+            }
+
+
+
+        }
+
+
 
 
     }

@@ -121,5 +121,18 @@ namespace Aplicacion_software_academico
                                 "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        private void btnCerrarSesion_Click(object sender, EventArgs e)
+        {
+            SesionActual.Correo = null;
+            SesionActual.Rol = null;
+            SesionActual.IdEstudiante = 0;
+            SesionActual.IdProfesor = 0;
+
+            InicioSesion frm = new InicioSesion();
+            frm.Show();
+
+            this.Close();
+        }
     }
 }

@@ -9,6 +9,7 @@ namespace Aplicacion_software_academico
         public static string Correo { get; set; }
         public static string Rol { get; set; }
         public static int IdEstudiante { get; set; }
+        public static int IdProfesor { get; set; }
     }
     public partial class InicioSesion : Form
     {
@@ -44,8 +45,8 @@ namespace Aplicacion_software_academico
 
             if (validarUser == "estudiante")
             {
-                SesionActual.Correo = txtUsuario.Text;
-                SesionActual.Rol = "estudiante";
+                //SesionActual.Correo = txtUsuario.Text;
+                //SesionActual.Rol = "estudiante";
                 
                 frm_Estudiantes formEstudiante = new frm_Estudiantes();
                 formEstudiante.Show();
@@ -67,6 +68,21 @@ namespace Aplicacion_software_academico
             //{
             //    MessageBox.Show("Inicio de sesión exitoso");
             //    UserActu = txtUsuario.Text;
+            //}
+
+            else if (validarUser == "profesor")
+            {
+                frm_Profesor formProfesor = new frm_Profesor();
+                formProfesor.Show();
+                this.Hide();
+            }
+            //else if (validarUser == "admin")
+            //{
+            //    SesionActual.Correo = txtUsuario.Text;
+            //    SesionActual.Rol = "admin";
+            //    frm_Admin formAdmin = new frm_Admin();
+            //    formAdmin.Show();
+            //    this.Hide();
             //}
             else
             {
