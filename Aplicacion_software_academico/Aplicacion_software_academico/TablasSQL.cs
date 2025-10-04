@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design.Serialization;
 using System.Data;
+using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 using System.Windows.Forms;
 using System.Data.SqlClient;
 using static Aplicacion_software_academico.TablasSQL;
@@ -45,7 +49,16 @@ namespace Aplicacion_software_academico
             // Valida si el usuario existe en la base de datos
             public string validarUsuario(string correo, string contraseña)
             {
-                string query = @"select u.contrasena, u.rol, e.id_estudiante, p.id_profesor from usuario u left join estudiante e on u.id_usuario = e.id_usuario left join profesor p on u.id_usuario = p.id_usuario where u.correo = @correo";
+                string query = @"
+                select u.contrasena, u.rol, 
+                e.id_estudiante, 
+                p.id_profesor,
+                a.id_admin
+                from usuario u
+                left join estudiante e on u.id_usuario = e.id_usuario
+                left join profesor p on u.id_usuario = p.id_usuario
+                left join administrador a on u.id_usuario = a.id_usuario
+                where u.correo = @correo";
 
 
                 SqlCommand comando = new SqlCommand(query, conexion.AbrirConexion());
@@ -74,8 +87,12 @@ namespace Aplicacion_software_academico
                             {
                                 SesionActual.IdProfesor = Convert.ToInt32(reader["id_profesor"]);
                             }
+                            else if (rol == "administrador" && reader["id_admin"] != DBNull.Value)
+                            {
+                                SesionActual.IdAdmin = Convert.ToInt32(reader["id_admin"]);
+                            }
 
-                            return rol;
+                                return rol;
                         }
                         else
                         {
@@ -95,34 +112,34 @@ namespace Aplicacion_software_academico
 
             }
             // Registra un nuevo usuario en la base de datos
-            public string registrarUsuario(string nombre, string correo, string contraseña, string rol)
+            public string registrarUsuario(string nombre, string correo, string contrasena, string rol)
             {
                 try
                 {
-                    cmd = new SqlCommand("select * from Usuario where correo = @correo", conexion.AbrirConexion());
-
-                    cmd.Parameters.AddWithValue("@correo", correo);
-                    
-                    int count = (int)cmd.ExecuteScalar();
-
-                    if (count > 0)
+                    using (SqlConnection conn = conexion.AbrirConexion())
                     {
-                        return "Este correo ya esta registrado.";
+                        string query = "insert into Usuario (nombre, correo, contrasena, rol) " +
+                                       "values (@nombre, @correo, @contrasena, @rol)";
+
+                        using (SqlCommand cmd = new SqlCommand(query, conn))
+                        {
+                            cmd.Parameters.AddWithValue("@nombre", nombre);
+                            cmd.Parameters.AddWithValue("@correo", correo);
+                            cmd.Parameters.AddWithValue("@contrasena", contrasena);
+                            cmd.Parameters.AddWithValue("@rol", rol);
+
+                            int filas = cmd.ExecuteNonQuery();
+
+                            if (filas > 0)
+                                return "Usuario registrado correctamente";
+                            else
+                                return "No se pudo registrar el usuario";
+                        }
                     }
-
-                    SqlCommand comando = new SqlCommand("INSERT INTO Usuario (nombre, correo, contrasena, rol) VALUES (@nombre, @correo, @contrasena ,@rol)", conexion.AbrirConexion());
-                    comando.CommandType = CommandType.Text;
-                    comando.Parameters.AddWithValue("@nombre", nombre);
-                    comando.Parameters.AddWithValue("@correo", correo);
-                    comando.Parameters.AddWithValue("@contrasena", contrasena);
-                    comando.Parameters.AddWithValue("@rol", rol);
-                    comando.ExecuteNonQuery();
-                    return "Usuario registrado correctamente";
-
                 }
-                catch 
+                catch (Exception ex)
                 {
-                    return "Error al registrar Usuario";
+                    return "Error al registrar usuario: " + ex.Message;
                 }
             }
 

@@ -10,6 +10,7 @@ namespace Aplicacion_software_academico
         public static string Rol { get; set; }
         public static int IdEstudiante { get; set; }
         public static int IdProfesor { get; set; }
+        public static int IdAdmin { get; set; }
     }
     public partial class InicioSesion : Form
     {
@@ -76,14 +77,12 @@ namespace Aplicacion_software_academico
                 formProfesor.Show();
                 this.Hide();
             }
-            //else if (validarUser == "admin")
-            //{
-            //    SesionActual.Correo = txtUsuario.Text;
-            //    SesionActual.Rol = "admin";
-            //    frm_Admin formAdmin = new frm_Admin();
-            //    formAdmin.Show();
-            //    this.Hide();
-            //}
+            else if (validarUser == "administrador")
+            {
+                frm_Administrador formAdmin = new frm_Administrador();
+                formAdmin.Show();
+                this.Hide();
+            }
             else
             {
                 MessageBox.Show(validarUser);
