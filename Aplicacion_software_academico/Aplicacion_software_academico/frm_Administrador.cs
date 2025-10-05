@@ -46,5 +46,20 @@ namespace Aplicacion_software_academico
 
             this.Close();
         }
+
+        private void btnAsignarEstudiante_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                frm_AsignarEstudiante formAsigEstudiante = new frm_AsignarEstudiante();
+
+                formAsigEstudiante.Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al abrir la ventana de crear usuario: " + ex.Message,
+                                "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
     }
 }

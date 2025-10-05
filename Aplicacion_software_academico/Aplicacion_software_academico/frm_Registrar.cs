@@ -66,13 +66,13 @@ namespace Aplicacion_software_academico
                 string nombre = txtNombre.Text.Trim();
                 string correo = txtCorreo.Text.Trim();
                 string contrasena = txtContrasena.Text.Trim();
-                // Normalizo el rol a minúsculas porque tu check en la BD usa minúsculas
+
                 string rol = cmbRol.SelectedItem.ToString().Trim().ToLower();
 
                 TablasSQL.Usuario usuario = new TablasSQL.Usuario();
-                string resultado = usuario.registrarUsuario(nombre, correo, contrasena, rol);
+                //string resultado = usuario.registrarUsuario(nombre, correo, contrasena, rol);
 
-                MessageBox.Show(resultado, "Resultado", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                //MessageBox.Show(resultado, "Resultado", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 //Usuario usuario = new Usuario();
                 //usuario.registrarUsuario(txtNombre.Text.Trim(),
                 //                     txtCorreo.Text.Trim(),
@@ -81,22 +81,53 @@ namespace Aplicacion_software_academico
 
                 //MessageBox.Show("Usuario creado exitosamente.");
 
+                string rolUsuario = cmbRol.SelectedItem.ToString();
+                if (rolUsuario == "estudiante")
+                {
+                    string semestre = txtSemestre.Text;
+                    DateTime fechaIngreso = dtpFechaIngreso.Value;
+
+                    string resultado = usuario.registrarUsuario(nombre, correo, contrasena, rol,
+                                                        semestre, fechaIngreso);
+                    MessageBox.Show(resultado);
+                }
+                else if (rol == "profesor")
+                {
+                    string especialidad = txtEspecialidad.Text;
+                    DateTime fechaContratacion = dtpFehcaContratacion.Value;
+                    string resultado = usuario.registrarUsuario(nombre, correo, contrasena, rol,
+                                                        null, null, especialidad, fechaContratacion);
+                    MessageBox.Show(resultado);
+                }
+
+                else if (rol == "administrador")
+                {
+                    string cargo = txtCargo.Text;
+
+                    string resultado = usuario.registrarUsuario(nombre, correo, contrasena, rol,
+                                                        null, null, null, null, cargo);
+                    MessageBox.Show(resultado);
+                }
+
+
                 // Limpiar campos
                 txtNombre.Clear();
                 txtCorreo.Clear();
                 txtContrasena.Clear();
                 cmbRol.SelectedIndex = 0;
 
-                string rolUsuario = cmbRol.SelectedItem.ToString();  
-                if (rolUsuario == "estudiante")
-                {
-                    string semestre = txtSemestre.Text.Trim();
-                }
+                
+
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error al crear usuario: " + ex.Message);
             }
+        }
+
+        private void panelAdmin_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

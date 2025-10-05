@@ -30,6 +30,7 @@
         {
             btnRegistrarUsuario = new Button();
             btnCerrarSesion = new Button();
+            btnAsignarEstudiante = new Button();
             SuspendLayout();
             // 
             // btnRegistrarUsuario
@@ -52,11 +53,22 @@
             btnCerrarSesion.UseVisualStyleBackColor = true;
             btnCerrarSesion.Click += btnCerrarSesion_Click;
             // 
+            // btnAsignarEstudiante
+            // 
+            btnAsignarEstudiante.Location = new Point(31, 192);
+            btnAsignarEstudiante.Name = "btnAsignarEstudiante";
+            btnAsignarEstudiante.Size = new Size(131, 73);
+            btnAsignarEstudiante.TabIndex = 24;
+            btnAsignarEstudiante.Text = "Asignar Estudiante";
+            btnAsignarEstudiante.UseVisualStyleBackColor = true;
+            btnAsignarEstudiante.Click += btnAsignarEstudiante_Click;
+            // 
             // frm_Administrador
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(982, 590);
+            Controls.Add(btnAsignarEstudiante);
             Controls.Add(btnCerrarSesion);
             Controls.Add(btnRegistrarUsuario);
             Name = "frm_Administrador";
@@ -68,5 +80,6 @@
 
         private Button btnRegistrarUsuario;
         private Button btnCerrarSesion;
+        private Button btnAsignarEstudiante;
     }
 }

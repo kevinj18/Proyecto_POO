@@ -112,57 +112,81 @@ namespace Aplicacion_software_academico
 
             }
             // Registra un nuevo usuario en la base de datos
-            public string registrarUsuario(string nombre, string correo, string contrasena, string rol)
+            public string registrarUsuario(string nombre, string correo, string contrasena, string rol,
+                               string semestre = null, DateTime? fechaIngreso = null,
+                               string especialidad = null, DateTime? fechaContratacion = null,
+                               string cargo = null)
             {
                 try
                 {
                     using (SqlConnection conn = conexion.AbrirConexion())
                     {
                         string query = "insert into Usuario (nombre, correo, contrasena, rol) " +
-                                       "values (@nombre, @correo, @contrasena, @rol)";
+                                        "output inserted.id_usuario " +
+                                        "values (@nombre, @correo, @contrasena, @rol)";
+                        int idUsuario;
+                        SqlCommand cmd = new SqlCommand(query, conn);
+                        
+                        //using (SqlCommand cmd = new SqlCommand(query, conn))
+                        //{
+                        cmd.Parameters.AddWithValue("@nombre", nombre);
+                        cmd.Parameters.AddWithValue("@correo", correo);
+                        cmd.Parameters.AddWithValue("@contrasena", contrasena);
+                        cmd.Parameters.AddWithValue("@rol", rol);
+                        idUsuario = (int)cmd.ExecuteScalar();
 
-                        using (SqlCommand cmd = new SqlCommand(query, conn))
-                        {
-                            cmd.Parameters.AddWithValue("@nombre", nombre);
-                            cmd.Parameters.AddWithValue("@correo", correo);
-                            cmd.Parameters.AddWithValue("@contrasena", contrasena);
-                            cmd.Parameters.AddWithValue("@rol", rol);
-                            int idUsuario = (int)cmd.ExecuteScalar();
+                            //int filas = cmd.ExecuteNonQuery();
 
-                            int filas = cmd.ExecuteNonQuery();
-
-                            if (filas > 0)
-                                return "Usuario registrado correctamente";
-                            else
-                                return "No se pudo registrar el usuario";
-                        }
+                            //if (filas > 0)
+                            //    return "Usuario registrado correctamente";
+                            //else
+                            //    return "No se pudo registrar el usuario";
+                        
 
                         string queryRol = "";
+                        SqlCommand cmdRol = null;
                         if (rol.ToLower() == "estudiante")
                         {
-                            queryRol = "insert into Estudiante(id_usuario) values(@idUsuario)";
+                            queryRol = "insert into Estudiante (id_usuario, semestre, fecha_ingreso) " +
+                           "values (@idUsuario, @semestre, @fechaIngreso)";
+                            cmdRol = new SqlCommand(queryRol, conn);
+                            cmdRol.Parameters.AddWithValue("@idUsuario", idUsuario);
+                            cmdRol.Parameters.AddWithValue("@semestre", semestre);
+                            cmdRol.Parameters.AddWithValue("@fechaIngreso", fechaIngreso);
                         }
                         else if (rol.ToLower() == "profesor")
                         {
-                            queryRol = "insert into Profesor(id_usuario) values(@idUsuario)";
+                            queryRol = "insert into Profesor (id_usuario, especialidad, fecha_contratacion) " +
+                           "values (@idUsuario, @especialidad, @fechaContratacion)";
+                            cmdRol = new SqlCommand(queryRol, conn);
+                            cmdRol.Parameters.AddWithValue("@idUsuario", idUsuario);
+                            cmdRol.Parameters.AddWithValue("@especialidad", especialidad);
+                            cmdRol.Parameters.AddWithValue("@fechaContratacion", fechaContratacion);
                         }
-                        else if (rol.ToLower() == "admnistrador")
+                        else if (rol.ToLower() == "administrador")
                         {
-                            queryRol = "insert into Administrador(id_usuario) values(@idUsuario)";
+                            queryRol = "insert into Administrador (id_usuario, cargo) " +
+                           "values (@idUsuario, @cargo)";
+                            cmdRol = new SqlCommand(queryRol, conn);
+                            cmdRol.Parameters.AddWithValue("@idUsuario", idUsuario);
+                            cmdRol.Parameters.AddWithValue("@cargo", cargo);
                         }
-                        if (!string.IsNullOrEmpty(queryRol))
+                        if (cmdRol != null)
                         {
-                            using (SqlCommand cmdRol = new SqlCommand(queryRol, conn)) {
-                                
+                            cmdRol.ExecuteNonQuery();
+                            //using (SqlCommand cmdRol = new SqlCommand(queryRol, conn)) {
 
-                                cmdRol.Parameters.AddWithValue("@idUsuario", idUsuario);
 
-                                cmdRol.ExecuteNonQuery();
+                            //    cmdRol.Parameters.AddWithValue("@idUsuario", idUsuario);
 
-                                
-                            }
+                            //    cmdRol.ExecuteNonQuery();
 
-                        } return "Usuario registrado correctamente";
+                            //cmdRol.ExecuteNonQuery();
+
+                            //}
+
+                        }
+                        return "Usuario registrado correctamente";
                     }
                 }
                 catch (Exception ex)

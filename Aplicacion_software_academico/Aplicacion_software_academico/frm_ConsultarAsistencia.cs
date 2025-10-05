@@ -25,19 +25,27 @@ namespace Aplicacion_software_academico
         {
             MostrarAsistencias();
         }
-
+        int idEstudiante = new Estudiante().ObtenerIdEstudiantePorCorreo(SesionActual.Correo);
         private void CargarMaterias()
         {
-            SqlCommand comando = new SqlCommand("SELECT id_asignatura, nombre FROM Asignatura", conexion.AbrirConexion());
+            string query = @"SELECT DISTINCT a.id_asignatura, a.nombre
+                     FROM Asignatura a
+                     INNER JOIN Asistencia asi ON a.id_asignatura = asi.id_asignatura
+                     WHERE asi.id_estudiante = @idEstudiante";
+            SqlCommand comando = new SqlCommand(query, conexion.AbrirConexion());
+            comando.Parameters.AddWithValue("@idEstudiante", idEstudiante);
             SqlDataAdapter da = new SqlDataAdapter(comando);
             DataTable dt = new DataTable();
             da.Fill(dt);
 
             // Insertar opción "Todas"
-            DataRow row = dt.NewRow();
-            row["id_asignatura"] = DBNull.Value;
-            row["nombre"] = "Todas";
-            dt.Rows.InsertAt(row, 0);
+            if(dt.Rows.Count > 0)
+            {
+                DataRow row = dt.NewRow();
+                row["id_asignatura"] = DBNull.Value;
+                row["nombre"] = "Todas";
+                dt.Rows.InsertAt(row, 0);
+            }
 
             // Primero configuro DisplayMember(Es la columna de la tabla en este caso el nombre de la asignatura) y ValueMember(Es la columna con el id de la asignatura)
             cmbMaterias.DisplayMember = "nombre";
@@ -51,7 +59,7 @@ namespace Aplicacion_software_academico
 
         private void MostrarAsistencias()
         {
-            int idEstudiante = new Estudiante().ObtenerIdEstudiantePorCorreo(SesionActual.Correo);
+            
             int? idAsignatura = null;
 
             if (cmbMaterias.SelectedValue != null &&

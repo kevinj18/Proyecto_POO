@@ -21,32 +21,34 @@ namespace Aplicacion_software_academico
             InitializeComponent();
         }
 
+
+
         private void frm_SubirNota_Load(object sender, EventArgs e)
         {
-            string query = @"
-            select e.id_estudiante, u.nombre as nombrecompleto
-            from estudiante e
-            inner join usuario u on e.id_usuario = u.id_usuario
-            where u.rol = 'estudiante'";
+            //string query = @"
+            //select e.id_estudiante, u.nombre as nombrecompleto
+            //from estudiante e
+            //inner join usuario u on e.id_usuario = u.id_usuario
+            //where u.rol = 'estudiante'";
 
-            using (SqlCommand cmd = new SqlCommand(query, conexion.AbrirConexion()))
-            {
-                SqlDataAdapter da = new SqlDataAdapter(cmd);
-                DataTable dt = new DataTable();
-                da.Fill(dt);
+            //using (SqlCommand cmd = new SqlCommand(query, conexion.AbrirConexion()))
+            //{
+            //    SqlDataAdapter da = new SqlDataAdapter(cmd);
+            //    DataTable dt = new DataTable();
+            //    da.Fill(dt);
 
-                cmbIdEstudiante.DataSource = dt;
-                cmbIdEstudiante.DisplayMember = "nombrecompleto";
-                cmbIdEstudiante.ValueMember = "id_estudiante";
-                conexion.CerrarConexion();
-            }
+            //    cmbIdEstudiante.DataSource = dt;
+            //    cmbIdEstudiante.DisplayMember = "nombrecompleto";
+            //    cmbIdEstudiante.ValueMember = "id_estudiante";
+            //    conexion.CerrarConexion();
+            //}
 
             try
             {
-               
-                Profesor profesor = new Profesor{ IdProfesor = SesionActual.IdProfesor };
 
-                
+                Profesor profesor = new Profesor { IdProfesor = SesionActual.IdProfesor };
+
+
                 DataTable asignaturas = profesor.ObtenerAsignaturas();
 
                 cmbIdAsignatura.DataSource = asignaturas;
@@ -84,6 +86,37 @@ namespace Aplicacion_software_academico
             catch (Exception ex)
             {
                 MessageBox.Show("Error al registrar la nota: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void cmbIdAsignatura_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cmbIdAsignatura.SelectedValue == null)
+                return;
+
+            int idAsignatura;
+            if (!int.TryParse(cmbIdAsignatura.SelectedValue.ToString(), out idAsignatura))
+                return;
+
+            string query = @"select e.id_estudiante, u.nombre AS nombrecompleto
+                     FROM Estudiante_Asignatura ea
+                     INNER JOIN Estudiante e ON ea.id_estudiante = e.id_estudiante
+                     INNER JOIN Usuario u ON e.id_usuario = u.id_usuario
+                     WHERE ea.id_asignatura = @idAsignatura";
+
+            using (SqlCommand cmd = new SqlCommand(query, conexion.AbrirConexion()))
+            {
+                cmd.Parameters.AddWithValue("@idAsignatura", idAsignatura);
+
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+
+                cmbIdEstudiante.DataSource = dt;
+                cmbIdEstudiante.DisplayMember = "nombrecompleto";
+                cmbIdEstudiante.ValueMember = "id_estudiante";
+
+                conexion.CerrarConexion();
             }
         }
     }
