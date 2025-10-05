@@ -16,5 +16,28 @@ namespace Aplicacion_software_academico
         {
             InitializeComponent();
         }
+
+        private void cmbRol_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            panelEstudiante.Visible = false;
+            panelProfesor.Visible = false;
+            panelAdmin.Visible = false;
+
+            if (cmbRol.SelectedItem == null)
+                return;
+
+            switch (cmbRol.SelectedItem.ToString())
+            {
+                case "Estudiante":
+                    panelEstudiante.Visible = true;
+                    break;
+                case "Profesor":
+                    panelProfesor.Visible = true;
+                    break;
+                case "Administrador":
+                    panelAdmin.Visible = true;
+                    break;
+            }
+        }
     }
 }
