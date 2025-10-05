@@ -38,22 +38,22 @@
             label5 = new Label();
             cmbRol = new ComboBox();
             panelEstudiante = new Panel();
+            label8 = new Label();
+            dtpFechaIngreso = new DateTimePicker();
+            label7 = new Label();
+            txtSemestre = new TextBox();
             label6 = new Label();
             btnRegistrar = new Button();
-            txtSemestre = new TextBox();
-            label7 = new Label();
-            dtpFechaIngreso = new DateTimePicker();
-            label8 = new Label();
             panelProfesor = new Panel();
-            label9 = new Label();
-            label10 = new Label();
-            label11 = new Label();
-            txtEspecialidad = new TextBox();
-            txtFechaContratación = new TextBox();
             panelAdmin = new Panel();
-            label12 = new Label();
-            label13 = new Label();
             txtCargo = new TextBox();
+            label13 = new Label();
+            label12 = new Label();
+            txtFechaContratación = new TextBox();
+            txtEspecialidad = new TextBox();
+            label11 = new Label();
+            label10 = new Label();
+            label9 = new Label();
             panelEstudiante.SuspendLayout();
             panelProfesor.SuspendLayout();
             panelAdmin.SuspendLayout();
@@ -151,6 +151,40 @@
             panelEstudiante.Size = new Size(493, 239);
             panelEstudiante.TabIndex = 10;
             // 
+            // label8
+            // 
+            label8.AutoSize = true;
+            label8.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label8.Location = new Point(176, 9);
+            label8.Name = "label8";
+            label8.Size = new Size(163, 28);
+            label8.TabIndex = 13;
+            label8.Text = "Panel estudiante";
+            // 
+            // dtpFechaIngreso
+            // 
+            dtpFechaIngreso.Location = new Point(176, 148);
+            dtpFechaIngreso.Name = "dtpFechaIngreso";
+            dtpFechaIngreso.Size = new Size(297, 27);
+            dtpFechaIngreso.TabIndex = 12;
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Font = new Font("Segoe UI", 12F, FontStyle.Italic, GraphicsUnit.Point, 0);
+            label7.Location = new Point(34, 147);
+            label7.Name = "label7";
+            label7.Size = new Size(136, 28);
+            label7.TabIndex = 2;
+            label7.Text = "Fecha ingreso:";
+            // 
+            // txtSemestre
+            // 
+            txtSemestre.Location = new Point(176, 75);
+            txtSemestre.Name = "txtSemestre";
+            txtSemestre.Size = new Size(297, 27);
+            txtSemestre.TabIndex = 1;
+            // 
             // label6
             // 
             label6.AutoSize = true;
@@ -170,40 +204,7 @@
             btnRegistrar.TabIndex = 11;
             btnRegistrar.Text = "Registrar";
             btnRegistrar.UseVisualStyleBackColor = true;
-            // 
-            // txtSemestre
-            // 
-            txtSemestre.Location = new Point(176, 75);
-            txtSemestre.Name = "txtSemestre";
-            txtSemestre.Size = new Size(297, 27);
-            txtSemestre.TabIndex = 1;
-            // 
-            // label7
-            // 
-            label7.AutoSize = true;
-            label7.Font = new Font("Segoe UI", 12F, FontStyle.Italic, GraphicsUnit.Point, 0);
-            label7.Location = new Point(34, 147);
-            label7.Name = "label7";
-            label7.Size = new Size(136, 28);
-            label7.TabIndex = 2;
-            label7.Text = "Fecha ingreso:";
-            // 
-            // dtpFechaIngreso
-            // 
-            dtpFechaIngreso.Location = new Point(176, 148);
-            dtpFechaIngreso.Name = "dtpFechaIngreso";
-            dtpFechaIngreso.Size = new Size(297, 27);
-            dtpFechaIngreso.TabIndex = 12;
-            // 
-            // label8
-            // 
-            label8.AutoSize = true;
-            label8.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label8.Location = new Point(176, 9);
-            label8.Name = "label8";
-            label8.Size = new Size(163, 28);
-            label8.TabIndex = 13;
-            label8.Text = "Panel estudiante";
+            btnRegistrar.Click += btnRegistrar_Click;
             // 
             // panelProfesor
             // 
@@ -218,50 +219,6 @@
             panelProfesor.Size = new Size(493, 239);
             panelProfesor.TabIndex = 12;
             // 
-            // label9
-            // 
-            label9.AutoSize = true;
-            label9.Font = new Font("Segoe UI", 12F, FontStyle.Italic, GraphicsUnit.Point, 0);
-            label9.Location = new Point(35, 90);
-            label9.Name = "label9";
-            label9.Size = new Size(123, 28);
-            label9.TabIndex = 0;
-            label9.Text = "Especialidad:";
-            // 
-            // label10
-            // 
-            label10.AutoSize = true;
-            label10.Font = new Font("Segoe UI", 12F, FontStyle.Italic, GraphicsUnit.Point, 0);
-            label10.Location = new Point(35, 153);
-            label10.Name = "label10";
-            label10.Size = new Size(208, 28);
-            label10.TabIndex = 1;
-            label10.Text = "Fecha de contratación:";
-            // 
-            // label11
-            // 
-            label11.AutoSize = true;
-            label11.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label11.Location = new Point(186, 18);
-            label11.Name = "label11";
-            label11.Size = new Size(150, 28);
-            label11.TabIndex = 2;
-            label11.Text = "Panel profesor:";
-            // 
-            // txtEspecialidad
-            // 
-            txtEspecialidad.Location = new Point(249, 94);
-            txtEspecialidad.Name = "txtEspecialidad";
-            txtEspecialidad.Size = new Size(212, 27);
-            txtEspecialidad.TabIndex = 3;
-            // 
-            // txtFechaContratación
-            // 
-            txtFechaContratación.Location = new Point(249, 157);
-            txtFechaContratación.Name = "txtFechaContratación";
-            txtFechaContratación.Size = new Size(212, 27);
-            txtFechaContratación.TabIndex = 4;
-            // 
             // panelAdmin
             // 
             panelAdmin.Controls.Add(txtCargo);
@@ -272,15 +229,12 @@
             panelAdmin.Size = new Size(491, 237);
             panelAdmin.TabIndex = 5;
             // 
-            // label12
+            // txtCargo
             // 
-            label12.AutoSize = true;
-            label12.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label12.Location = new Point(152, 28);
-            label12.Name = "label12";
-            label12.Size = new Size(201, 28);
-            label12.TabIndex = 0;
-            label12.Text = "Panel administrativo:";
+            txtCargo.Location = new Point(138, 115);
+            txtCargo.Name = "txtCargo";
+            txtCargo.Size = new Size(270, 27);
+            txtCargo.TabIndex = 2;
             // 
             // label13
             // 
@@ -292,12 +246,59 @@
             label13.TabIndex = 1;
             label13.Text = "Cargo:";
             // 
-            // txtCargo
+            // label12
             // 
-            txtCargo.Location = new Point(138, 115);
-            txtCargo.Name = "txtCargo";
-            txtCargo.Size = new Size(270, 27);
-            txtCargo.TabIndex = 2;
+            label12.AutoSize = true;
+            label12.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label12.Location = new Point(152, 28);
+            label12.Name = "label12";
+            label12.Size = new Size(201, 28);
+            label12.TabIndex = 0;
+            label12.Text = "Panel administrativo:";
+            // 
+            // txtFechaContratación
+            // 
+            txtFechaContratación.Location = new Point(249, 157);
+            txtFechaContratación.Name = "txtFechaContratación";
+            txtFechaContratación.Size = new Size(212, 27);
+            txtFechaContratación.TabIndex = 4;
+            // 
+            // txtEspecialidad
+            // 
+            txtEspecialidad.Location = new Point(249, 94);
+            txtEspecialidad.Name = "txtEspecialidad";
+            txtEspecialidad.Size = new Size(212, 27);
+            txtEspecialidad.TabIndex = 3;
+            // 
+            // label11
+            // 
+            label11.AutoSize = true;
+            label11.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label11.Location = new Point(186, 18);
+            label11.Name = "label11";
+            label11.Size = new Size(150, 28);
+            label11.TabIndex = 2;
+            label11.Text = "Panel profesor:";
+            // 
+            // label10
+            // 
+            label10.AutoSize = true;
+            label10.Font = new Font("Segoe UI", 12F, FontStyle.Italic, GraphicsUnit.Point, 0);
+            label10.Location = new Point(35, 153);
+            label10.Name = "label10";
+            label10.Size = new Size(208, 28);
+            label10.TabIndex = 1;
+            label10.Text = "Fecha de contratación:";
+            // 
+            // label9
+            // 
+            label9.AutoSize = true;
+            label9.Font = new Font("Segoe UI", 12F, FontStyle.Italic, GraphicsUnit.Point, 0);
+            label9.Location = new Point(35, 90);
+            label9.Name = "label9";
+            label9.Size = new Size(123, 28);
+            label9.TabIndex = 0;
+            label9.Text = "Especialidad:";
             // 
             // frm_Registrar
             // 
@@ -319,6 +320,7 @@
             Controls.Add(label1);
             Name = "frm_Registrar";
             Text = "Form2";
+            Load += frm_Registrar_Load;
             panelEstudiante.ResumeLayout(false);
             panelEstudiante.PerformLayout();
             panelProfesor.ResumeLayout(false);

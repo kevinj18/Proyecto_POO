@@ -21,7 +21,7 @@ namespace Aplicacion_software_academico
         {
             try
             {
-                frm_AdminCrearUsuario formCrearUser = new frm_AdminCrearUsuario();
+                frm_Registrar formCrearUser = new frm_Registrar();
 
 
                 formCrearUser.Show();

@@ -127,6 +127,7 @@ namespace Aplicacion_software_academico
                             cmd.Parameters.AddWithValue("@correo", correo);
                             cmd.Parameters.AddWithValue("@contrasena", contrasena);
                             cmd.Parameters.AddWithValue("@rol", rol);
+                            int idUsuario = (int)cmd.ExecuteScalar();
 
                             int filas = cmd.ExecuteNonQuery();
 
@@ -135,6 +136,33 @@ namespace Aplicacion_software_academico
                             else
                                 return "No se pudo registrar el usuario";
                         }
+
+                        string queryRol = "";
+                        if (rol.ToLower() == "estudiante")
+                        {
+                            queryRol = "insert into Estudiante(id_usuario) values(@idUsuario)";
+                        }
+                        else if (rol.ToLower() == "profesor")
+                        {
+                            queryRol = "insert into Profesor(id_usuario) values(@idUsuario)";
+                        }
+                        else if (rol.ToLower() == "admnistrador")
+                        {
+                            queryRol = "insert into Administrador(id_usuario) values(@idUsuario)";
+                        }
+                        if (!string.IsNullOrEmpty(queryRol))
+                        {
+                            using (SqlCommand cmdRol = new SqlCommand(queryRol, conn)) {
+                                
+
+                                cmdRol.Parameters.AddWithValue("@idUsuario", idUsuario);
+
+                                cmdRol.ExecuteNonQuery();
+
+                                
+                            }
+
+                        } return "Usuario registrado correctamente";
                     }
                 }
                 catch (Exception ex)

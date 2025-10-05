@@ -12,6 +12,7 @@ namespace Aplicacion_software_academico
     {
 
         public SqlConnection Conexion = new SqlConnection(cadena);
+        //static private string cadena = @"Data Source=.\SQLEXPRESS;Initial Catalog=Software_Academico;Integrated Security=True;Encrypt=False; Connection Timeout=30";
         static private string cadena = @"Data Source=.\SQLEXPRESS;Initial Catalog=Software_Academico;Integrated Security=True;Encrypt=False; Connection Timeout=30";
 
 
@@ -30,7 +31,7 @@ namespace Aplicacion_software_academico
         //    return conexion;
         //}
 
-            public SqlConnection AbrirConexion()
+        public SqlConnection AbrirConexion()
         {
             if (Conexion.State == ConnectionState.Closed)
                 Conexion.Open();
