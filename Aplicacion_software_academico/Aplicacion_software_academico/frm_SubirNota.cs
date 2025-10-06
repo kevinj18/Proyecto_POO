@@ -66,7 +66,6 @@ namespace Aplicacion_software_academico
             {
                 int idEstudiante = Convert.ToInt32(cmbIdEstudiante.SelectedValue);
                 int idAsignatura = Convert.ToInt32(cmbIdAsignatura.SelectedValue);
-                decimal nota = Convert.ToDecimal(txtNota.Text);
 
                 string query = "insert into Calificacion (id_estudiante, id_asignatura, nota) " +
                                "values (@idEstudiante, @idAsignatura, @nota)";
@@ -120,4 +119,3 @@ namespace Aplicacion_software_academico
             }
         }
     }
-}

@@ -50,7 +50,6 @@ namespace Aplicacion_software_academico
                     cmbIdEstudiante.Text = string.Empty;
                 }
             }
-        }
 
         private void btnGuardar_Click(object sender, EventArgs e)
         {
