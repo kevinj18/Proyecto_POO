@@ -61,5 +61,19 @@ namespace Aplicacion_software_academico
                                 "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        private void btnCrearCurso_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                frm_CrearCurso formCrearCurso = new frm_CrearCurso();
+                formCrearCurso.Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al abrir la ventana de crear asignatura: " + ex.Message,
+                                "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
     }
 }

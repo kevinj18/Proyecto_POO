@@ -25,7 +25,47 @@ namespace Aplicacion_software_academico
         SqlDataAdapter da;
         DataTable dt;
 
+        public class Asignatura
+        {
+            cConexion conexion = new cConexion();
+            SqlCommand cmd = new SqlCommand();
+            SqlDataAdapter da = new SqlDataAdapter();
+            DataTable dt = new DataTable();
 
+            private int idAsignatura;
+            private string nombreAsignatura;
+            private string creditos;
+            private int idProfesor;
+
+            public int IdAsignatura { get => idAsignatura; set => idAsignatura = value; }
+            public string NombreAsignatura { get => nombreAsignatura; set => nombreAsignatura = value; }
+            public string Creditos { get => creditos; set => creditos = value; }
+            public int IdProfesor { get => idProfesor; set => idProfesor = value; }
+            public string registrarAsignatura(string idProfesor, string nombreAsignatura, string creditos)
+            {
+                try
+                {
+                    using (SqlConnection conn = conexion.AbrirConexion())
+                    {
+                        string query = "insert into Asignatura (nombre, creditos, id_profesor) " +
+                                        "output inserted.id_asignatura " +
+                                        "values (@nombreAsignatura, @creditos, @idProfesor)";
+                        int idAsignatura;
+                        SqlCommand cmd = new SqlCommand(query, conn);
+
+                        cmd.Parameters.AddWithValue("@nombreAsignatura", nombreAsignatura);
+                        cmd.Parameters.AddWithValue("@creditos", creditos);
+                        cmd.Parameters.AddWithValue("@idProfesor", idProfesor);
+                        idAsignatura = (int)cmd.ExecuteScalar();
+                        return "Asignatura registrada correctamente";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return "Error al registrar asignatura: " + ex.Message;
+                }
+            }
+        }
         public class Usuario
         {
             cConexion conexion = new cConexion();
