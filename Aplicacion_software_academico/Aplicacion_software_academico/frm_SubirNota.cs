@@ -62,30 +62,40 @@ namespace Aplicacion_software_academico
         }
         private void btnGuardar_Click(object sender, EventArgs e)
         {
-            try
+            foreach (DataGridViewRow row in dgvNotas.Rows)
             {
-                int idEstudiante = Convert.ToInt32(cmbIdEstudiante.SelectedValue);
+                if (row.IsNewRow) continue;
+
+                int idEstudiante = Convert.ToInt32(row.Cells["id_estudiante"].Value);
                 int idAsignatura = Convert.ToInt32(cmbIdAsignatura.SelectedValue);
 
-                string query = "insert into Calificacion (id_estudiante, id_asignatura, nota) " +
-                               "values (@idEstudiante, @idAsignatura, @nota)";
+                decimal nota1 = Convert.ToDecimal(row.Cells["Nota1"].Value);
+                decimal nota2 = Convert.ToDecimal(row.Cells["Nota2"].Value);
+                decimal nota3 = Convert.ToDecimal(row.Cells["Nota3"].Value);
+                decimal nota4 = Convert.ToDecimal(row.Cells["Nota4"].Value);
 
-                using (SqlCommand cmd = new SqlCommand(query, conexion.AbrirConexion()))
-                {
-                    cmd.Parameters.AddWithValue("@idEstudiante", idEstudiante);
-                    cmd.Parameters.AddWithValue("@idAsignatura", idAsignatura);
-                    cmd.Parameters.AddWithValue("@nota", nota);
+                string query = @"
+                    IF EXISTS (SELECT 1 FROM Calificacion WHERE id_estudiante=@idEstudiante AND id_asignatura=@idAsignatura)
+                    UPDATE Calificacion
+                    SET nota1=@nota1, nota2=@nota2, nota3=@nota3, nota4=@nota4, fecha_registro=GETDATE()
+                    WHERE id_estudiante=@idEstudiante AND id_asignatura=@idAsignatura
+                    ELSE
+                    INSERT INTO Calificacion (id_estudiante, id_asignatura, nota1, nota2, nota3, nota4)
+                    VALUES (@idEstudiante, @idAsignatura, @nota1, @nota2, @nota3, @nota4)";
 
-                    cmd.ExecuteNonQuery();
-                }
+                SqlCommand cmd = new SqlCommand(query, conexion.AbrirConexion());
+                cmd.Parameters.AddWithValue("@idEstudiante", idEstudiante);
+                cmd.Parameters.AddWithValue("@idAsignatura", idAsignatura);
+                cmd.Parameters.AddWithValue("@nota1", nota1);
+                cmd.Parameters.AddWithValue("@nota2", nota2);
+                cmd.Parameters.AddWithValue("@nota3", nota3);
+                cmd.Parameters.AddWithValue("@nota4", nota4);
 
-                conexion.CerrarConexion();
-                MessageBox.Show("Nota registrada con éxito.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                cmd.ExecuteNonQuery();
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error al registrar la nota: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+
+            conexion.CerrarConexion();
+            MessageBox.Show("Notas guardadas correctamente.");
         }
 
         private void cmbIdAsignatura_SelectedIndexChanged(object sender, EventArgs e)
@@ -97,25 +107,36 @@ namespace Aplicacion_software_academico
             if (!int.TryParse(cmbIdAsignatura.SelectedValue.ToString(), out idAsignatura))
                 return;
 
-            string query = @"select e.id_estudiante, u.nombre AS nombrecompleto
-                     FROM Estudiante_Asignatura ea
-                     INNER JOIN Estudiante e ON ea.id_estudiante = e.id_estudiante
-                     INNER JOIN Usuario u ON e.id_usuario = u.id_usuario
-                     WHERE ea.id_asignatura = @idAsignatura";
+            string query = @"
+                SELECT e.id_estudiante, u.nombre AS Estudiante,
+                ISNULL(c.nota1, 0) AS Nota1,
+                ISNULL(c.nota2, 0) AS Nota2,
+                ISNULL(c.nota3, 0) AS Nota3,
+                ISNULL(c.nota4, 0) AS Nota4,
+                ISNULL(c.nota_final, 0) AS NotaFinal
+                FROM Estudiante e
+                INNER JOIN Usuario u ON e.id_usuario = u.id_usuario
+                INNER JOIN Estudiante_Asignatura ea ON e.id_estudiante = ea.id_estudiante
+                LEFT JOIN Calificacion c ON e.id_estudiante = c.id_estudiante 
+                AND ea.id_asignatura = c.id_asignatura
+                WHERE ea.id_asignatura = @idAsignatura";
 
-            using (SqlCommand cmd = new SqlCommand(query, conexion.AbrirConexion()))
-            {
-                cmd.Parameters.AddWithValue("@idAsignatura", idAsignatura);
+            SqlCommand cmd = new SqlCommand(query, conexion.AbrirConexion());
+            cmd.Parameters.AddWithValue("@idAsignatura", idAsignatura);
 
-                SqlDataAdapter da = new SqlDataAdapter(cmd);
-                DataTable dt = new DataTable();
-                da.Fill(dt);
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            da.Fill(dt);
 
-                cmbIdEstudiante.DataSource = dt;
-                cmbIdEstudiante.DisplayMember = "nombrecompleto";
-                cmbIdEstudiante.ValueMember = "id_estudiante";
+            dgvNotas.DataSource = dt;
 
-                conexion.CerrarConexion();
-            }
+
+            conexion.CerrarConexion();
+        }
+
+        private void dgvNotas_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
+}

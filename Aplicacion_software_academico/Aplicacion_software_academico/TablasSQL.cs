@@ -359,7 +359,11 @@ namespace Aplicacion_software_academico
             public int IdCalificacion { get; set; }
             public int IdEstudiante { get; set; }
             public int IdAsignatura { get; set; }
-            public decimal Nota { get; set; }
+            public decimal? Nota1 { get; set; }
+            public decimal? Nota2 { get; set; }
+            public decimal? Nota3 { get; set; }
+            public decimal? Nota4 { get; set; }
+            public decimal NotaFinal { get; set; }
             public DateTime FechaRegistro { get; set; }
 
             private cConexion conexion = new cConexion();
@@ -399,81 +403,82 @@ namespace Aplicacion_software_academico
             }
 
             // obtener calificación por id
-            public Calificacion ObtenerPorId(int id)
-            {
-                Calificacion calificacion = null;
+            //public Calificacion ObtenerPorId(int id)
+            //{
+            //    Calificacion calificacion = null;
 
-                string query = @"select c.id_calificacion, c.id_estudiante, c.id_asignatura, 
-                                c.nota, c.fecha_registro
-                         from calificacion c
-                         where c.id_calificacion = @id";
+            //    string query = @"select c.id_calificacion, c.id_estudiante, c.id_asignatura, 
+            //                    c.nota, c.fecha_registro
+            //             from calificacion c
+            //             where c.id_calificacion = @id";
 
-                SqlCommand comando = new SqlCommand(query, conexion.AbrirConexion());
-                comando.Parameters.AddWithValue("@id", id);
+            //    SqlCommand comando = new SqlCommand(query, conexion.AbrirConexion());
+            //    comando.Parameters.AddWithValue("@id", id);
 
-                using (SqlDataReader reader = comando.ExecuteReader())
-                {
-                    if (reader.Read())
-                    {
-                        calificacion = new Calificacion
-                        {
-                            IdCalificacion = Convert.ToInt32(reader["id_calificacion"]),
-                            IdEstudiante = Convert.ToInt32(reader["id_estudiante"]),
-                            IdAsignatura = Convert.ToInt32(reader["id_asignatura"]),
-                            Nota = Convert.ToDecimal(reader["nota"]),
-                            FechaRegistro = Convert.ToDateTime(reader["fecha_registro"])
-                        };
-                    }
-                }
+            //    using (SqlDataReader reader = comando.ExecuteReader())
+            //    {
+            //        if (reader.Read())
+            //        {
+            //            calificacion = new Calificacion
+            //            {
+            //                IdCalificacion = Convert.ToInt32(reader["id_calificacion"]),
+            //                IdEstudiante = Convert.ToInt32(reader["id_estudiante"]),
+            //                IdAsignatura = Convert.ToInt32(reader["id_asignatura"]),
+            //                Nota = Convert.ToDecimal(reader["nota"]),
+            //                FechaRegistro = Convert.ToDateTime(reader["fecha_registro"])
+            //            };
+            //        }
+            //    }
 
-                conexion.CerrarConexion();
-                return calificacion;
-            }
+            //    conexion.CerrarConexion();
+            //    return calificacion;
+            //}
 
             // obtener todas las calificaciones de un estudiante
-            public List<Calificacion> ObtenerPorEstudiante(int idEstudiante)
-            {
-                List<Calificacion> lista = new List<Calificacion>();
+            //public List<Calificacion> ObtenerPorEstudiante(int idEstudiante)
+            //{
+            //    List<Calificacion> lista = new List<Calificacion>();
 
-                string query = @"select c.id_calificacion, c.id_estudiante, c.id_asignatura, 
-                                c.nota, c.fecha_registro
-                         from calificacion c
-                         where c.id_estudiante = @idEstudiante";
+            //    string query = @"select c.id_calificacion, c.id_estudiante, c.id_asignatura, 
+            //                    c.nota, c.fecha_registro
+            //             from calificacion c
+            //             where c.id_estudiante = @idEstudiante";
 
-                SqlCommand comando = new SqlCommand(query, conexion.AbrirConexion());
-                comando.Parameters.AddWithValue("@idEstudiante", idEstudiante);
+            //    SqlCommand comando = new SqlCommand(query, conexion.AbrirConexion());
+            //    comando.Parameters.AddWithValue("@idEstudiante", idEstudiante);
 
-                using (SqlDataReader reader = comando.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        lista.Add(new Calificacion
-                        {
-                            IdCalificacion = Convert.ToInt32(reader["id_calificacion"]),
-                            IdEstudiante = Convert.ToInt32(reader["id_estudiante"]),
-                            IdAsignatura = Convert.ToInt32(reader["id_asignatura"]),
-                            Nota = Convert.ToDecimal(reader["nota"]),
-                            FechaRegistro = Convert.ToDateTime(reader["fecha_registro"])
-                        });
-                    }
-                }
+            //    using (SqlDataReader reader = comando.ExecuteReader())
+            //    {
+            //        while (reader.Read())
+            //        {
+            //            lista.Add(new Calificacion
+            //            {
+            //                IdCalificacion = Convert.ToInt32(reader["id_calificacion"]),
+            //                IdEstudiante = Convert.ToInt32(reader["id_estudiante"]),
+            //                IdAsignatura = Convert.ToInt32(reader["id_asignatura"]),
+            //                Nota = Convert.ToDecimal(reader["nota"]),
+            //                FechaRegistro = Convert.ToDateTime(reader["fecha_registro"])
+            //            });
+            //        }
+            //    }
 
-                conexion.CerrarConexion();
-                return lista;
-            }
+            //    conexion.CerrarConexion();
+            //    return lista;
+            //}
 
             public List<Calificacion> ObtenerPorEstudianteYAsignatura(int idEstudiante, int? idAsignatura = null)
             {
                 List<Calificacion> lista = new List<Calificacion>();
 
-                string query = @"select c.id_calificacion, c.id_estudiante, c.id_asignatura, 
-                            c.nota, c.fecha_registro
-                     from calificacion c
-                     where c.id_estudiante = @idEstudiante";
+                string query = @"SELECT c.id_calificacion, c.id_estudiante, c.id_asignatura,
+                            c.nota1, c.nota2, c.nota3, c.nota4, 
+                            c.nota_final, c.fecha_registro
+                     FROM Calificacion c
+                     WHERE c.id_estudiante = @idEstudiante";
 
                 if (idAsignatura.HasValue)
                 {
-                    query += " and c.id_asignatura = @idAsignatura";
+                    query += " AND c.id_asignatura = @idAsignatura";
                 }
 
                 SqlCommand comando = new SqlCommand(query, conexion.AbrirConexion());
@@ -491,7 +496,11 @@ namespace Aplicacion_software_academico
                             IdCalificacion = Convert.ToInt32(reader["id_calificacion"]),
                             IdEstudiante = Convert.ToInt32(reader["id_estudiante"]),
                             IdAsignatura = Convert.ToInt32(reader["id_asignatura"]),
-                            Nota = Convert.ToDecimal(reader["nota"]),
+                            Nota1 = reader["nota1"] == DBNull.Value ? null : (decimal?)Convert.ToDecimal(reader["nota1"]),
+                            Nota2 = reader["nota2"] == DBNull.Value ? null : (decimal?)Convert.ToDecimal(reader["nota2"]),
+                            Nota3 = reader["nota3"] == DBNull.Value ? null : (decimal?)Convert.ToDecimal(reader["nota3"]),
+                            Nota4 = reader["nota4"] == DBNull.Value ? null : (decimal?)Convert.ToDecimal(reader["nota4"]),
+                            NotaFinal = reader["nota_final"] == DBNull.Value ? 0 : Convert.ToDecimal(reader["nota_final"]),
                             FechaRegistro = Convert.ToDateTime(reader["fecha_registro"])
                         });
                     }
@@ -500,36 +509,37 @@ namespace Aplicacion_software_academico
                 conexion.CerrarConexion();
                 return lista;
             }
+
 
             // obtener todas las calificaciones
-            public List<Calificacion> ObtenerTodos()
-            {
-                List<Calificacion> lista = new List<Calificacion>();
+            //public List<Calificacion> ObtenerTodos()
+            //{
+            //    List<Calificacion> lista = new List<Calificacion>();
 
-                string query = @"select c.id_calificacion, c.id_estudiante, c.id_asignatura, 
-                                c.nota, c.fecha_registro
-                         from calificacion c";
+            //    string query = @"select c.id_calificacion, c.id_estudiante, c.id_asignatura, 
+            //                    c.nota, c.fecha_registro
+            //             from calificacion c";
 
-                SqlCommand comando = new SqlCommand(query, conexion.AbrirConexion());
+            //    SqlCommand comando = new SqlCommand(query, conexion.AbrirConexion());
 
-                using (SqlDataReader reader = comando.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        lista.Add(new Calificacion
-                        {
-                            IdCalificacion = Convert.ToInt32(reader["id_calificacion"]),
-                            IdEstudiante = Convert.ToInt32(reader["id_estudiante"]),
-                            IdAsignatura = Convert.ToInt32(reader["id_asignatura"]),
-                            Nota = Convert.ToDecimal(reader["nota"]),
-                            FechaRegistro = Convert.ToDateTime(reader["fecha_registro"])
-                        });
-                    }
-                }
+            //    using (SqlDataReader reader = comando.ExecuteReader())
+            //    {
+            //        while (reader.Read())
+            //        {
+            //            lista.Add(new Calificacion
+            //            {
+            //                IdCalificacion = Convert.ToInt32(reader["id_calificacion"]),
+            //                IdEstudiante = Convert.ToInt32(reader["id_estudiante"]),
+            //                IdAsignatura = Convert.ToInt32(reader["id_asignatura"]),
+            //                Nota = Convert.ToDecimal(reader["nota"]),
+            //                FechaRegistro = Convert.ToDateTime(reader["fecha_registro"])
+            //            });
+            //        }
+            //    }
 
-                conexion.CerrarConexion();
-                return lista;
-            }
+            //    conexion.CerrarConexion();
+            //    return lista;
+            //}
         }
 
 
