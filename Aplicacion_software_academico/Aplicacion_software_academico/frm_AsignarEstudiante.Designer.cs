@@ -35,13 +35,15 @@
             dgvInscripciones = new DataGridView();
             btnGuardar = new Button();
             label3 = new Label();
+            panel1 = new Panel();
             ((System.ComponentModel.ISupportInitialize)dgvInscripciones).BeginInit();
+            panel1.SuspendLayout();
             SuspendLayout();
             // 
             // cmbEstudiantes
             // 
             cmbEstudiantes.FormattingEnabled = true;
-            cmbEstudiantes.Location = new Point(628, 155);
+            cmbEstudiantes.Location = new Point(623, 171);
             cmbEstudiantes.Margin = new Padding(3, 4, 3, 4);
             cmbEstudiantes.Name = "cmbEstudiantes";
             cmbEstudiantes.Size = new Size(250, 28);
@@ -51,7 +53,7 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 12F, FontStyle.Italic, GraphicsUnit.Point, 0);
-            label1.Location = new Point(516, 155);
+            label1.Location = new Point(511, 171);
             label1.Name = "label1";
             label1.Size = new Size(105, 28);
             label1.TabIndex = 18;
@@ -60,7 +62,7 @@
             // cmbAsignatura
             // 
             cmbAsignatura.FormattingEnabled = true;
-            cmbAsignatura.Location = new Point(217, 158);
+            cmbAsignatura.Location = new Point(192, 171);
             cmbAsignatura.Margin = new Padding(3, 4, 3, 4);
             cmbAsignatura.Name = "cmbAsignatura";
             cmbAsignatura.Size = new Size(250, 28);
@@ -70,7 +72,7 @@
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI", 12F, FontStyle.Italic, GraphicsUnit.Point, 0);
-            label2.Location = new Point(105, 158);
+            label2.Location = new Point(80, 171);
             label2.Name = "label2";
             label2.Size = new Size(110, 28);
             label2.TabIndex = 20;
@@ -102,11 +104,20 @@
             // 
             label3.AutoSize = true;
             label3.Font = new Font("Stencil", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label3.Location = new Point(320, 35);
+            label3.Location = new Point(333, 42);
             label3.Name = "label3";
             label3.Size = new Size(329, 35);
             label3.TabIndex = 24;
             label3.Text = "Asignar estudiante";
+            // 
+            // panel1
+            // 
+            panel1.BackColor = Color.Gainsboro;
+            panel1.Controls.Add(label3);
+            panel1.Location = new Point(-2, 0);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(940, 125);
+            panel1.TabIndex = 25;
             // 
             // frm_AsignarEstudiante
             // 
@@ -114,7 +125,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ControlLightLight;
             ClientSize = new Size(939, 599);
-            Controls.Add(label3);
+            Controls.Add(panel1);
             Controls.Add(btnGuardar);
             Controls.Add(dgvInscripciones);
             Controls.Add(cmbAsignatura);
@@ -126,6 +137,8 @@
             Text = "frm_AsignarUsuario";
             Load += frm_AsignarEstudiante_Load;
             ((System.ComponentModel.ISupportInitialize)dgvInscripciones).EndInit();
+            panel1.ResumeLayout(false);
+            panel1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -139,5 +152,6 @@
         private DataGridView dgvInscripciones;
         private Button btnGuardar;
         private Label label3;
+        private Panel panel1;
     }
 }

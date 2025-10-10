@@ -17,6 +17,22 @@ namespace Aplicacion_software_academico
             InitializeComponent();
         }
 
+        private void AbrirFormularioEnPanel(Form formulario)
+        {
+            // Limpia el panel antes de agregar un nuevo formulario
+            pnlContenedor.Controls.Clear();
+
+            // Configura el formulario para que se comporte como un control
+            formulario.TopLevel = false;
+            formulario.FormBorderStyle = FormBorderStyle.None;
+            formulario.Dock = DockStyle.Fill;
+
+            // Agrega el formulario al panel y lo muestra
+            pnlContenedor.Controls.Add(formulario);
+            formulario.Show();
+        }
+
+
         private void button1_Click(object sender, EventArgs e)
         {
             try
@@ -43,7 +59,7 @@ namespace Aplicacion_software_academico
                 // Opcional: pasarle el correo o id del estudiante al constructor
                 //formNotas.CorreoEstudiante = SesionActual.Correo;
 
-                formNotas.ShowDialog();
+                AbrirFormularioEnPanel(formNotas);
             }
             catch (Exception ex)
             {
@@ -78,7 +94,7 @@ namespace Aplicacion_software_academico
                 // Opcional: pasarle el correo o id del estudiante al constructor
                 //formNotas.CorreoEstudiante = SesionActual.Correo;
 
-                formAsistencia.ShowDialog();
+                AbrirFormularioEnPanel(formAsistencia);
             }
             catch (Exception ex)
             {
@@ -95,8 +111,7 @@ namespace Aplicacion_software_academico
         private void btnSoliRevision_Click(object sender, EventArgs e)
         {
             frm_SolicitudRevisioncs solicitudForm = new frm_SolicitudRevisioncs();
-
-            solicitudForm.Show();
+            AbrirFormularioEnPanel(solicitudForm);
         }
 
         private void button1_Click_1(object sender, EventArgs e)
@@ -107,7 +122,7 @@ namespace Aplicacion_software_academico
                 if (SesionActual.Rol == "estudiante" && SesionActual.IdEstudiante > 0)
                 {
                     frm_ConsultarSolicitudes frm = new frm_ConsultarSolicitudes();
-                    frm.Show();
+                    AbrirFormularioEnPanel(frm);
                 }
                 else
                 {
@@ -133,6 +148,11 @@ namespace Aplicacion_software_academico
             frm.Show();
 
             this.Close();
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

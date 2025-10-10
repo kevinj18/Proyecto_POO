@@ -17,6 +17,21 @@ namespace Aplicacion_software_academico
             InitializeComponent();
         }
 
+        private void AbrirFormularioEnPanel(Form formulario)
+        {
+            // Limpia el panel antes de agregar un nuevo formulario
+            pnlContenedor.Controls.Clear();
+
+            // Configura el formulario para que se comporte como un control
+            formulario.TopLevel = false;
+            formulario.FormBorderStyle = FormBorderStyle.None;
+            formulario.Dock = DockStyle.Fill;
+
+            // Agrega el formulario al panel y lo muestra
+            pnlContenedor.Controls.Add(formulario);
+            formulario.Show();
+        }
+
         private void btnSubirNota_Click(object sender, EventArgs e)
         {
             try
@@ -24,7 +39,7 @@ namespace Aplicacion_software_academico
                 frm_SubirNota formSubirNota = new frm_SubirNota();
 
 
-                formSubirNota.Show();
+                AbrirFormularioEnPanel(formSubirNota);
             }
             catch (Exception ex)
             {
@@ -40,27 +55,11 @@ namespace Aplicacion_software_academico
                 frm_SubirAsistencia formSubirAsistencia = new frm_SubirAsistencia();
 
 
-                formSubirAsistencia.Show();
+                AbrirFormularioEnPanel(formSubirAsistencia);
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error al abrir la ventana de subir asistencia: " + ex.Message,
-                                "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private void btnEditarNota_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                frm_EditarNota formEditarNota = new frm_EditarNota();
-
-
-                formEditarNota.Show();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error al abrir la ventana de editar nota: " + ex.Message,
                                 "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -78,22 +77,6 @@ namespace Aplicacion_software_academico
             this.Close();
         }
 
-        private void btnEditarAsistencia_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                frm_EditarAsistencia formEditarAsistencia = new frm_EditarAsistencia();
-
-
-                formEditarAsistencia.Show();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error al abrir la ventana de editar asistencia: " + ex.Message,
-                                "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
         private void btnResponderSolicitudes_Click(object sender, EventArgs e)
         {
             try
@@ -101,7 +84,7 @@ namespace Aplicacion_software_academico
                 frm_ResponderSolicitudes formSolicitud = new frm_ResponderSolicitudes();
 
 
-                formSolicitud.Show();
+                AbrirFormularioEnPanel(formSolicitud);
             }
             catch (Exception ex)
             {

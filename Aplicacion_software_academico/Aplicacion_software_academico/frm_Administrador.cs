@@ -17,6 +17,21 @@ namespace Aplicacion_software_academico
             InitializeComponent();
         }
 
+        private void AbrirFormularioEnPanel(Form formulario)
+        {
+            // Limpia el panel antes de agregar un nuevo formulario
+            pnlContenedor.Controls.Clear();
+
+            // Configura el formulario para que se comporte como un control
+            formulario.TopLevel = false;
+            formulario.FormBorderStyle = FormBorderStyle.None;
+            formulario.Dock = DockStyle.Fill;
+
+            // Agrega el formulario al panel y lo muestra
+            pnlContenedor.Controls.Add(formulario);
+            formulario.Show();
+        }
+
         private void btnRegistrarUsuario_Click(object sender, EventArgs e)
         {
             try
@@ -24,7 +39,7 @@ namespace Aplicacion_software_academico
                 frm_Registrar formCrearUser = new frm_Registrar();
 
 
-                formCrearUser.Show();
+                AbrirFormularioEnPanel(formCrearUser);
             }
             catch (Exception ex)
             {
@@ -53,7 +68,7 @@ namespace Aplicacion_software_academico
             {
                 frm_AsignarEstudiante formAsigEstudiante = new frm_AsignarEstudiante();
 
-                formAsigEstudiante.Show();
+                AbrirFormularioEnPanel(formAsigEstudiante);
             }
             catch (Exception ex)
             {
@@ -67,7 +82,7 @@ namespace Aplicacion_software_academico
             try
             {
                 frm_CrearCurso formCrearCurso = new frm_CrearCurso();
-                formCrearCurso.Show();
+                AbrirFormularioEnPanel(formCrearCurso);
             }
             catch (Exception ex)
             {

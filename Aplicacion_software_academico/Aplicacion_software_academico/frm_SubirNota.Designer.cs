@@ -33,25 +33,30 @@
             label4 = new Label();
             cmbIdAsignatura = new ComboBox();
             dgvNotas = new DataGridView();
+            panel1 = new Panel();
+            panel2 = new Panel();
             ((System.ComponentModel.ISupportInitialize)dgvNotas).BeginInit();
+            panel1.SuspendLayout();
+            panel2.SuspendLayout();
             SuspendLayout();
             // 
             // label2
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI", 12F, FontStyle.Italic, GraphicsUnit.Point, 0);
-            label2.Location = new Point(252, 94);
+            label2.Location = new Point(302, 168);
             label2.Name = "label2";
-            label2.Size = new Size(89, 21);
+            label2.Size = new Size(110, 28);
             label2.TabIndex = 3;
             label2.Text = "Asignatura:";
             // 
             // btnGuardar
             // 
             btnGuardar.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
-            btnGuardar.Location = new Point(360, 605);
+            btnGuardar.Location = new Point(431, 17);
+            btnGuardar.Margin = new Padding(3, 4, 3, 4);
             btnGuardar.Name = "btnGuardar";
-            btnGuardar.Size = new Size(88, 23);
+            btnGuardar.Size = new Size(101, 31);
             btnGuardar.TabIndex = 13;
             btnGuardar.Text = "Guardar";
             btnGuardar.UseVisualStyleBackColor = true;
@@ -61,45 +66,70 @@
             // 
             label4.AutoSize = true;
             label4.Font = new Font("Stencil", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label4.Location = new Point(360, 32);
+            label4.Location = new Point(385, 48);
             label4.Name = "label4";
-            label4.Size = new Size(164, 29);
+            label4.Size = new Size(206, 35);
             label4.TabIndex = 14;
             label4.Text = "Subir Notas";
             // 
             // cmbIdAsignatura
             // 
             cmbIdAsignatura.FormattingEnabled = true;
-            cmbIdAsignatura.Location = new Point(379, 94);
+            cmbIdAsignatura.Location = new Point(431, 168);
+            cmbIdAsignatura.Margin = new Padding(3, 4, 3, 4);
             cmbIdAsignatura.Name = "cmbIdAsignatura";
-            cmbIdAsignatura.Size = new Size(219, 23);
+            cmbIdAsignatura.Size = new Size(250, 28);
             cmbIdAsignatura.TabIndex = 9;
             cmbIdAsignatura.SelectedIndexChanged += cmbIdAsignatura_SelectedIndexChanged;
             // 
             // dgvNotas
             // 
             dgvNotas.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvNotas.Location = new Point(12, 200);
+            dgvNotas.Location = new Point(22, 240);
+            dgvNotas.Margin = new Padding(3, 4, 3, 4);
             dgvNotas.Name = "dgvNotas";
-            dgvNotas.Size = new Size(870, 386);
+            dgvNotas.RowHeadersWidth = 51;
+            dgvNotas.Size = new Size(926, 346);
             dgvNotas.TabIndex = 15;
             dgvNotas.CellContentClick += dgvNotas_CellContentClick;
             // 
+            // panel1
+            // 
+            panel1.BackColor = Color.PapayaWhip;
+            panel1.Controls.Add(label4);
+            panel1.Location = new Point(0, -3);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(1237, 130);
+            panel1.TabIndex = 16;
+            // 
+            // panel2
+            // 
+            panel2.BackColor = Color.PapayaWhip;
+            panel2.Controls.Add(btnGuardar);
+            panel2.Location = new Point(0, 614);
+            panel2.Name = "panel2";
+            panel2.Size = new Size(1237, 240);
+            panel2.TabIndex = 17;
+            // 
             // frm_SubirNota
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ControlLightLight;
-            ClientSize = new Size(894, 640);
+            ClientSize = new Size(1235, 853);
+            Controls.Add(panel2);
+            Controls.Add(panel1);
             Controls.Add(dgvNotas);
-            Controls.Add(label4);
-            Controls.Add(btnGuardar);
             Controls.Add(cmbIdAsignatura);
             Controls.Add(label2);
+            Margin = new Padding(3, 4, 3, 4);
             Name = "frm_SubirNota";
             Text = "frm_SubirNota";
             Load += frm_SubirNota_Load;
             ((System.ComponentModel.ISupportInitialize)dgvNotas).EndInit();
+            panel1.ResumeLayout(false);
+            panel1.PerformLayout();
+            panel2.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -110,5 +140,7 @@
         private Label label4;
         private ComboBox cmbIdAsignatura;
         private DataGridView dgvNotas;
+        private Panel panel1;
+        private Panel panel2;
     }
 }

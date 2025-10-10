@@ -31,13 +31,15 @@
             dgvSolicitudes = new DataGridView();
             Solicitudes = new Label();
             label1 = new Label();
+            panel1 = new Panel();
             ((System.ComponentModel.ISupportInitialize)dgvSolicitudes).BeginInit();
+            panel1.SuspendLayout();
             SuspendLayout();
             // 
             // dgvSolicitudes
             // 
             dgvSolicitudes.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvSolicitudes.Location = new Point(64, 125);
+            dgvSolicitudes.Location = new Point(64, 149);
             dgvSolicitudes.Margin = new Padding(3, 4, 3, 4);
             dgvSolicitudes.Name = "dgvSolicitudes";
             dgvSolicitudes.RowHeadersWidth = 51;
@@ -49,21 +51,30 @@
             // 
             Solicitudes.AutoSize = true;
             Solicitudes.Font = new Font("Segoe UI", 12F, FontStyle.Italic, GraphicsUnit.Point, 0);
-            Solicitudes.Location = new Point(64, 77);
+            Solicitudes.Location = new Point(473, 107);
             Solicitudes.Name = "Solicitudes";
-            Solicitudes.Size = new Size(107, 28);
+            Solicitudes.Size = new Size(103, 28);
             Solicitudes.TabIndex = 1;
-            Solicitudes.Text = "Solicitudes:";
+            Solicitudes.Text = "Solicitudes";
             // 
             // label1
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Stencil", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label1.Location = new Point(344, 20);
+            label1.Location = new Point(352, 21);
             label1.Name = "label1";
             label1.Size = new Size(356, 35);
             label1.TabIndex = 2;
             label1.Text = "Consulta solicitudes";
+            // 
+            // panel1
+            // 
+            panel1.BackColor = Color.LightSkyBlue;
+            panel1.Controls.Add(label1);
+            panel1.Location = new Point(-4, -2);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(1054, 74);
+            panel1.TabIndex = 3;
             // 
             // frm_ConsultarSolicitudes
             // 
@@ -71,7 +82,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ControlLightLight;
             ClientSize = new Size(1049, 743);
-            Controls.Add(label1);
+            Controls.Add(panel1);
             Controls.Add(Solicitudes);
             Controls.Add(dgvSolicitudes);
             Margin = new Padding(3, 4, 3, 4);
@@ -79,6 +90,8 @@
             Text = "frm_ConsultarSolicitudes";
             Load += frm_ConsultarSolicitudes_Load;
             ((System.ComponentModel.ISupportInitialize)dgvSolicitudes).EndInit();
+            panel1.ResumeLayout(false);
+            panel1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -88,5 +101,6 @@
         private DataGridView dgvSolicitudes;
         private Label Solicitudes;
         private Label label1;
+        private Panel panel1;
     }
 }

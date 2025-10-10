@@ -30,17 +30,20 @@
         {
             btnSubirNota = new Button();
             btnSubirAsistencia = new Button();
-            btnEditarNota = new Button();
             btnCerrarSesion = new Button();
-            btnEditarAsistencia = new Button();
             btnResponderSolicitudes = new Button();
             label1 = new Label();
+            pnlContenedor = new Panel();
+            panel1 = new Panel();
+            panel2 = new Panel();
+            panel1.SuspendLayout();
+            panel2.SuspendLayout();
             SuspendLayout();
             // 
             // btnSubirNota
             // 
             btnSubirNota.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
-            btnSubirNota.Location = new Point(42, 80);
+            btnSubirNota.Location = new Point(36, 65);
             btnSubirNota.Margin = new Padding(3, 4, 3, 4);
             btnSubirNota.Name = "btnSubirNota";
             btnSubirNota.Size = new Size(150, 97);
@@ -52,7 +55,7 @@
             // btnSubirAsistencia
             // 
             btnSubirAsistencia.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
-            btnSubirAsistencia.Location = new Point(42, 220);
+            btnSubirAsistencia.Location = new Point(36, 258);
             btnSubirAsistencia.Margin = new Padding(3, 4, 3, 4);
             btnSubirAsistencia.Name = "btnSubirAsistencia";
             btnSubirAsistencia.Size = new Size(150, 97);
@@ -61,22 +64,10 @@
             btnSubirAsistencia.UseVisualStyleBackColor = true;
             btnSubirAsistencia.Click += btnSubirAsistencia_Click;
             // 
-            // btnEditarNota
-            // 
-            btnEditarNota.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
-            btnEditarNota.Location = new Point(42, 375);
-            btnEditarNota.Margin = new Padding(3, 4, 3, 4);
-            btnEditarNota.Name = "btnEditarNota";
-            btnEditarNota.Size = new Size(150, 97);
-            btnEditarNota.TabIndex = 3;
-            btnEditarNota.Text = "Editar Nota";
-            btnEditarNota.UseVisualStyleBackColor = true;
-            btnEditarNota.Click += btnEditarNota_Click;
-            // 
             // btnCerrarSesion
             // 
             btnCerrarSesion.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
-            btnCerrarSesion.Location = new Point(912, 16);
+            btnCerrarSesion.Location = new Point(1299, 14);
             btnCerrarSesion.Margin = new Padding(3, 4, 3, 4);
             btnCerrarSesion.Name = "btnCerrarSesion";
             btnCerrarSesion.Size = new Size(97, 31);
@@ -85,22 +76,10 @@
             btnCerrarSesion.UseVisualStyleBackColor = true;
             btnCerrarSesion.Click += btnCerrarSesion_Click;
             // 
-            // btnEditarAsistencia
-            // 
-            btnEditarAsistencia.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
-            btnEditarAsistencia.Location = new Point(42, 527);
-            btnEditarAsistencia.Margin = new Padding(3, 4, 3, 4);
-            btnEditarAsistencia.Name = "btnEditarAsistencia";
-            btnEditarAsistencia.Size = new Size(150, 97);
-            btnEditarAsistencia.TabIndex = 5;
-            btnEditarAsistencia.Text = "Editar Asistencia";
-            btnEditarAsistencia.UseVisualStyleBackColor = true;
-            btnEditarAsistencia.Click += btnEditarAsistencia_Click;
-            // 
             // btnResponderSolicitudes
             // 
-            btnResponderSolicitudes.Font = new Font("Segoe UI", 12F, FontStyle.Italic, GraphicsUnit.Point, 0);
-            btnResponderSolicitudes.Location = new Point(42, 683);
+            btnResponderSolicitudes.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
+            btnResponderSolicitudes.Location = new Point(36, 452);
             btnResponderSolicitudes.Margin = new Padding(3, 4, 3, 4);
             btnResponderSolicitudes.Name = "btnResponderSolicitudes";
             btnResponderSolicitudes.Size = new Size(150, 97);
@@ -113,40 +92,67 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Stencil", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label1.Location = new Point(397, 16);
+            label1.Location = new Point(680, 38);
             label1.Name = "label1";
-            label1.Size = new Size(255, 35);
+            label1.Size = new Size(166, 35);
             label1.TabIndex = 7;
-            label1.Text = "menú profesor";
+            label1.Text = "profesor";
+            // 
+            // pnlContenedor
+            // 
+            pnlContenedor.Location = new Point(241, 134);
+            pnlContenedor.Name = "pnlContenedor";
+            pnlContenedor.Size = new Size(1155, 597);
+            pnlContenedor.TabIndex = 8;
+            // 
+            // panel1
+            // 
+            panel1.BackColor = Color.FloralWhite;
+            panel1.Controls.Add(label1);
+            panel1.Controls.Add(btnCerrarSesion);
+            panel1.Location = new Point(0, -1);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(1409, 111);
+            panel1.TabIndex = 9;
+            // 
+            // panel2
+            // 
+            panel2.BackColor = Color.PapayaWhip;
+            panel2.Controls.Add(btnSubirNota);
+            panel2.Controls.Add(btnSubirAsistencia);
+            panel2.Controls.Add(btnResponderSolicitudes);
+            panel2.Location = new Point(0, 109);
+            panel2.Name = "panel2";
+            panel2.Size = new Size(217, 636);
+            panel2.TabIndex = 10;
             // 
             // frm_Profesor
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ControlLightLight;
-            ClientSize = new Size(1023, 859);
-            Controls.Add(label1);
-            Controls.Add(btnResponderSolicitudes);
-            Controls.Add(btnEditarAsistencia);
-            Controls.Add(btnCerrarSesion);
-            Controls.Add(btnEditarNota);
-            Controls.Add(btnSubirAsistencia);
-            Controls.Add(btnSubirNota);
+            ClientSize = new Size(1408, 743);
+            Controls.Add(panel2);
+            Controls.Add(panel1);
+            Controls.Add(pnlContenedor);
             Margin = new Padding(3, 4, 3, 4);
             Name = "frm_Profesor";
             Text = "frm_Profesor";
+            panel1.ResumeLayout(false);
+            panel1.PerformLayout();
+            panel2.ResumeLayout(false);
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
 
         private Button btnSubirNota;
         private Button btnSubirAsistencia;
-        private Button btnEditarNota;
         private Button btnCerrarSesion;
-        private Button btnEditarAsistencia;
         private Button btnResponderSolicitudes;
         private Label label1;
+        private Panel pnlContenedor;
+        private Panel panel1;
+        private Panel panel2;
     }
 }
