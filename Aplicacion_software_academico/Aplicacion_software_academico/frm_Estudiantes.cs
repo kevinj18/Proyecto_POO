@@ -27,9 +27,6 @@ namespace Aplicacion_software_academico
             formulario.FormBorderStyle = FormBorderStyle.None;
             formulario.Dock = DockStyle.Fill;
 
-            // Agrega el formulario al panel y lo muestra
-            pnlContenedor.Controls.Add(formulario);
-            formulario.Show();
         }
 
 
@@ -106,7 +103,6 @@ namespace Aplicacion_software_academico
         private void frm_Estudiantes_Load(object sender, EventArgs e)
         {
 
-        }
 
         private void btnSoliRevision_Click(object sender, EventArgs e)
         {
