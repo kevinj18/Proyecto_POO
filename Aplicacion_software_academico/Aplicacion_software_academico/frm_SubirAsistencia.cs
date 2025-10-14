@@ -20,8 +20,76 @@ namespace Aplicacion_software_academico
             InitializeComponent();
         }
 
+        [System.Runtime.InteropServices.DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
+        private static extern IntPtr CreateRoundRectRgn(
+        int nLeftRect, int nTopRect, int nRightRect, int nBottomRect,
+        int nWidthEllipse, int nHeightEllipse);
+
+        private void AplicarEstilos()
+        {
+            // --- FONDO GENERAL ---
+            this.BackColor = Color.FromArgb(244, 246, 249); // Gris azulado muy claro
+
+            // --- PANEL SUPERIOR (ENCABEZADO) ---
+            panel2.BackColor = Color.FromArgb(74, 144, 226); // Azul pastel
+            panel2.Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, panel2.Width, panel2.Height, 15, 15));
+
+            // --- COMBOBOX ASIGNATURAS ---
+            cmbIdAsignatura.Font = new Font("Segoe UI", 10);
+            cmbIdAsignatura.FlatStyle = FlatStyle.Flat;
+            cmbIdAsignatura.BackColor = Color.White;
+            cmbIdAsignatura.ForeColor = Color.FromArgb(44, 62, 80); // gris oscuro
+            cmbIdAsignatura.DropDownStyle = ComboBoxStyle.DropDownList;
+
+            // --- DATAGRIDVIEW ASISTENCIA ---
+            dgvAsistencia.BackgroundColor = Color.White;
+            dgvAsistencia.BorderStyle = BorderStyle.None;
+            dgvAsistencia.EnableHeadersVisualStyles = false;
+
+            // ENCABEZADOS
+            dgvAsistencia.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(74, 144, 226); // azul pastel
+            dgvAsistencia.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dgvAsistencia.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+            dgvAsistencia.ColumnHeadersHeight = 35;
+            dgvAsistencia.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+
+            // CELDAS
+            dgvAsistencia.DefaultCellStyle.BackColor = Color.White;
+            dgvAsistencia.DefaultCellStyle.ForeColor = Color.FromArgb(44, 62, 80); // gris oscuro
+            dgvAsistencia.DefaultCellStyle.Font = new Font("Segoe UI", 10);
+            dgvAsistencia.DefaultCellStyle.SelectionBackColor = Color.FromArgb(210, 228, 255); // azul claro de selección
+            dgvAsistencia.DefaultCellStyle.SelectionForeColor = Color.Black;
+            dgvAsistencia.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            // FILAS ALTERNADAS
+            dgvAsistencia.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(245, 248, 252); // gris-azulado suave
+
+            // LÍNEAS Y DETALLES
+            dgvAsistencia.GridColor = Color.FromArgb(230, 235, 240); // líneas tenues
+            dgvAsistencia.RowHeadersVisible = false;
+            dgvAsistencia.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            // --- BOTÓN GUARDAR ---
+            btnGuardar.BackColor = Color.FromArgb(74, 144, 226); // Azul pastel
+            btnGuardar.ForeColor = Color.White;
+            btnGuardar.FlatStyle = FlatStyle.Flat;
+            btnGuardar.Font = new Font("Segoe UI Semibold", 11, FontStyle.Italic);
+            btnGuardar.FlatAppearance.BorderSize = 0;
+
+            // Hover y Click
+            btnGuardar.FlatAppearance.MouseOverBackColor = Color.FromArgb(37, 99, 235); // Hover
+            btnGuardar.FlatAppearance.MouseDownBackColor = Color.FromArgb(29, 78, 216); // Click
+
+            // Bordes redondeados
+            btnGuardar.Region = System.Drawing.Region.FromHrgn(
+                CreateRoundRectRgn(0, 0, btnGuardar.Width, btnGuardar.Height, 15, 15)
+            );
+        }
+
+
         private void frm_SubirAsistencia_Load(object sender, EventArgs e)
         {
+            AplicarEstilos();
             CargarMateriasProfesor();
             //Profesor prof = new Profesor(SesionActual.IdProfesor);
             //cmbIdAsignatura.DataSource = prof.ObtenerAsignaturas();
@@ -87,7 +155,7 @@ namespace Aplicacion_software_academico
             // Si no hay asistencias registradas, mostrar estudiantes inscritos
             if (dt.Rows.Count == 0)
             {
-                // <-- aquí casteamos los NULLs para que el DataTable tenga tipos correctos -->
+
                 query = @"
             SELECT CAST(NULL AS INT) AS id_asistencia,
                    e.id_estudiante,
@@ -107,7 +175,7 @@ namespace Aplicacion_software_academico
                 da.Fill(dt);
             }
 
-            // asigno datasource
+
             dgvAsistencia.DataSource = dt;
 
             // oculto columnas técnicas si existen
@@ -116,13 +184,13 @@ namespace Aplicacion_software_academico
             if (dgvAsistencia.Columns.Contains("id_estudiante"))
                 dgvAsistencia.Columns["id_estudiante"].Visible = false;
 
-            // fecha readonly (no editable)
+
             if (dgvAsistencia.Columns.Contains("fecha"))
             {
                 dgvAsistencia.Columns["fecha"].ReadOnly = true;
             }
 
-            // reemplazar la columna 'estado' por un ComboBox para evitar entrada inválida
+
             if (dgvAsistencia.Columns.Contains("estado"))
             {
                 int idx = dgvAsistencia.Columns["estado"].Index;
@@ -132,7 +200,7 @@ namespace Aplicacion_software_academico
                 var combo = new DataGridViewComboBoxColumn();
                 combo.Name = "estado";
                 combo.HeaderText = "estado";
-                combo.DataPropertyName = "estado"; // enlaza con la columna del DataTable
+                combo.DataPropertyName = "estado";
                 combo.Items.AddRange(new string[] { "Presente", "Ausente", "Tarde" });
                 combo.FlatStyle = FlatStyle.Flat;
 
@@ -207,6 +275,24 @@ namespace Aplicacion_software_academico
             finally
             {
                 conexion.CerrarConexion();
+            }
+        }
+
+        private void panel2_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void dgvAsistencia_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            foreach (DataGridViewRow row in dgvAsistencia.Rows)
+            {
+                if (row.Cells["fecha"].Value != null &&
+                    Convert.ToDateTime(row.Cells["fecha"].Value).Date != DateTime.Today)
+                {
+                    row.ReadOnly = true;
+                    row.DefaultCellStyle.BackColor = Color.LightGray;
+                }
             }
         }
     }

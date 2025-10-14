@@ -42,30 +42,28 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 12F, FontStyle.Italic, GraphicsUnit.Point, 0);
-            label1.Location = new Point(312, 125);
+            label1.Location = new Point(273, 94);
             label1.Name = "label1";
-            label1.Size = new Size(82, 28);
+            label1.Size = new Size(67, 21);
             label1.TabIndex = 0;
             label1.Text = "Materia:";
             // 
             // cmbMaterias
             // 
             cmbMaterias.FormattingEnabled = true;
-            cmbMaterias.Location = new Point(400, 125);
-            cmbMaterias.Margin = new Padding(3, 4, 3, 4);
+            cmbMaterias.Location = new Point(350, 94);
             cmbMaterias.Name = "cmbMaterias";
-            cmbMaterias.Size = new Size(287, 28);
+            cmbMaterias.Size = new Size(252, 23);
             cmbMaterias.TabIndex = 1;
             cmbMaterias.SelectedIndexChanged += cmbMaterias_SelectedIndexChanged;
             // 
             // dgvNotas
             // 
             dgvNotas.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvNotas.Location = new Point(172, 247);
-            dgvNotas.Margin = new Padding(3, 4, 3, 4);
+            dgvNotas.Location = new Point(150, 185);
             dgvNotas.Name = "dgvNotas";
             dgvNotas.RowHeadersWidth = 51;
-            dgvNotas.Size = new Size(685, 511);
+            dgvNotas.Size = new Size(599, 383);
             dgvNotas.TabIndex = 2;
             dgvNotas.CellContentClick += dgvNotas_CellContentClick;
             // 
@@ -73,9 +71,9 @@
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Stencil", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label2.Location = new Point(368, 28);
+            label2.Location = new Point(322, 21);
             label2.Name = "label2";
-            label2.Size = new Size(308, 35);
+            label2.Size = new Size(244, 29);
             label2.TabIndex = 3;
             label2.Text = "Consulta de notas";
             // 
@@ -83,9 +81,9 @@
             // 
             label3.AutoSize = true;
             label3.Font = new Font("Segoe UI", 12F, FontStyle.Italic, GraphicsUnit.Point, 0);
-            label3.Location = new Point(458, 202);
+            label3.Location = new Point(401, 152);
             label3.Name = "label3";
-            label3.Size = new Size(105, 28);
+            label3.Size = new Size(84, 21);
             label3.TabIndex = 4;
             label3.Text = "Resultados";
             // 
@@ -94,22 +92,23 @@
             panel1.BackColor = Color.LightSkyBlue;
             panel1.Controls.Add(label2);
             panel1.Location = new Point(0, -1);
+            panel1.Margin = new Padding(3, 2, 3, 2);
             panel1.Name = "panel1";
-            panel1.Size = new Size(1026, 96);
+            panel1.Size = new Size(963, 72);
             panel1.TabIndex = 5;
+            panel1.Paint += panel1_Paint;
             // 
             // frm_ConsultarNotas
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ControlLightLight;
-            ClientSize = new Size(1025, 771);
+            ClientSize = new Size(963, 578);
             Controls.Add(panel1);
             Controls.Add(label3);
             Controls.Add(dgvNotas);
             Controls.Add(cmbMaterias);
             Controls.Add(label1);
-            Margin = new Padding(3, 4, 3, 4);
             Name = "frm_ConsultarNotas";
             Text = "frm_ConsultarNotas";
             Load += frm_ConsultarNotas_Load;

@@ -57,7 +57,7 @@ namespace Aplicacion_software_academico
             // Luego asigno el DataSource
             cmbMaterias.DataSource = dt;
 
-            
+
         }
 
         private void MostrarNotas()
@@ -76,18 +76,73 @@ namespace Aplicacion_software_academico
             var lista = calificacion.ObtenerPorEstudianteYAsignatura(idEstudiante, idAsignatura);
 
             dgvNotas.DataSource = lista;
-            
+
         }
 
         private void dgvNotas_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             MostrarNotas();
         }
+        [System.Runtime.InteropServices.DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
+        private static extern IntPtr CreateRoundRectRgn(
+    int nLeftRect, int nTopRect, int nRightRect, int nBottomRect,
+    int nWidthEllipse, int nHeightEllipse
+);
 
+        private void AplicarEstilos()
+        {
+            // --- FONDO GENERAL ---
+            this.BackColor = Color.FromArgb(244, 246, 249); // #F4F6F9 gris azulado muy claro
+
+            // --- PANEL SUPERIOR (ENCABEZADO) ---
+            panel1.BackColor = Color.FromArgb(74, 144, 226); // #4A90E2 azul pastel
+            panel1.Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, panel1.Width, panel1.Height, 15, 15));
+
+            // --- COMBOBOX MATERIAS ---
+            cmbMaterias.Font = new Font("Segoe UI", 10);
+            cmbMaterias.FlatStyle = FlatStyle.Flat;
+            cmbMaterias.BackColor = Color.White;
+            cmbMaterias.ForeColor = Color.FromArgb(44, 62, 80); // gris oscuro
+
+            // --- DATAGRIDVIEW NOTAS ---
+            dgvNotas.BackgroundColor = Color.White;
+            dgvNotas.BorderStyle = BorderStyle.None;
+            dgvNotas.EnableHeadersVisualStyles = false;
+
+            // ENCABEZADOS
+            dgvNotas.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(74, 144, 226); // azul pastel
+            dgvNotas.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dgvNotas.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+            dgvNotas.ColumnHeadersHeight = 35;
+            dgvNotas.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+
+            // CELDAS
+            dgvNotas.DefaultCellStyle.BackColor = Color.White;
+            dgvNotas.DefaultCellStyle.ForeColor = Color.FromArgb(44, 62, 80); // gris oscuro
+            dgvNotas.DefaultCellStyle.Font = new Font("Segoe UI", 10);
+            dgvNotas.DefaultCellStyle.SelectionBackColor = Color.FromArgb(210, 228, 255); // azul muy claro
+            dgvNotas.DefaultCellStyle.SelectionForeColor = Color.Black;
+            dgvNotas.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            // FILAS ALTERNADAS
+            dgvNotas.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(245, 248, 252); // gris-azulado suave
+
+            // LÍNEAS Y DETALLES
+            dgvNotas.GridColor = Color.FromArgb(230, 235, 240);
+            dgvNotas.RowHeadersVisible = false;
+            dgvNotas.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+        }
         private void frm_ConsultarNotas_Load(object sender, EventArgs e)
         {
             CargarMaterias(idEstudiante);
-            dgvNotas.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            AplicarEstilos();
+
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

@@ -35,18 +35,20 @@
             btnCrearCurso = new Button();
             pnlContenedor = new Panel();
             panel1 = new Panel();
+            btnCerrar = new Button();
             panel2 = new Panel();
+            pictureBox1 = new PictureBox();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
             // btnRegistrarUsuario
             // 
             btnRegistrarUsuario.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold | FontStyle.Italic);
-            btnRegistrarUsuario.Location = new Point(30, 113);
-            btnRegistrarUsuario.Margin = new Padding(3, 4, 3, 4);
+            btnRegistrarUsuario.Location = new Point(23, 215);
             btnRegistrarUsuario.Name = "btnRegistrarUsuario";
-            btnRegistrarUsuario.Size = new Size(150, 97);
+            btnRegistrarUsuario.Size = new Size(131, 73);
             btnRegistrarUsuario.TabIndex = 22;
             btnRegistrarUsuario.Text = "Registrar Usuario";
             btnRegistrarUsuario.UseVisualStyleBackColor = true;
@@ -55,10 +57,9 @@
             // btnCerrarSesion
             // 
             btnCerrarSesion.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
-            btnCerrarSesion.Location = new Point(1066, 12);
-            btnCerrarSesion.Margin = new Padding(3, 4, 3, 4);
+            btnCerrarSesion.Location = new Point(933, 9);
             btnCerrarSesion.Name = "btnCerrarSesion";
-            btnCerrarSesion.Size = new Size(97, 31);
+            btnCerrarSesion.Size = new Size(85, 23);
             btnCerrarSesion.TabIndex = 23;
             btnCerrarSesion.Text = "Cerrar Sesión";
             btnCerrarSesion.UseVisualStyleBackColor = true;
@@ -67,10 +68,9 @@
             // btnAsignarEstudiante
             // 
             btnAsignarEstudiante.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold | FontStyle.Italic);
-            btnAsignarEstudiante.Location = new Point(30, 285);
-            btnAsignarEstudiante.Margin = new Padding(3, 4, 3, 4);
+            btnAsignarEstudiante.Location = new Point(23, 344);
             btnAsignarEstudiante.Name = "btnAsignarEstudiante";
-            btnAsignarEstudiante.Size = new Size(150, 97);
+            btnAsignarEstudiante.Size = new Size(131, 73);
             btnAsignarEstudiante.TabIndex = 24;
             btnAsignarEstudiante.Text = "Asignar Estudiante";
             btnAsignarEstudiante.UseVisualStyleBackColor = true;
@@ -80,18 +80,19 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Stencil", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label1.Location = new Point(485, 25);
+            label1.Location = new Point(311, 22);
             label1.Name = "label1";
-            label1.Size = new Size(264, 35);
+            label1.Size = new Size(213, 29);
             label1.TabIndex = 25;
             label1.Text = "Administración";
             // 
             // btnCrearCurso
             // 
             btnCrearCurso.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold | FontStyle.Italic);
-            btnCrearCurso.Location = new Point(30, 461);
+            btnCrearCurso.Location = new Point(23, 476);
+            btnCrearCurso.Margin = new Padding(3, 2, 3, 2);
             btnCrearCurso.Name = "btnCrearCurso";
-            btnCrearCurso.Size = new Size(150, 83);
+            btnCrearCurso.Size = new Size(131, 62);
             btnCrearCurso.TabIndex = 27;
             btnCrearCurso.Text = "Crear Curso";
             btnCrearCurso.UseVisualStyleBackColor = true;
@@ -99,47 +100,76 @@
             // 
             // pnlContenedor
             // 
-            pnlContenedor.Location = new Point(225, 101);
+            pnlContenedor.Location = new Point(189, 68);
+            pnlContenedor.Margin = new Padding(3, 2, 3, 2);
             pnlContenedor.Name = "pnlContenedor";
-            pnlContenedor.Size = new Size(940, 603);
+            pnlContenedor.Size = new Size(851, 579);
             pnlContenedor.TabIndex = 28;
             // 
             // panel1
             // 
-            panel1.BackColor = Color.WhiteSmoke;
+            panel1.BackColor = Color.AliceBlue;
+            panel1.Controls.Add(btnCerrar);
             panel1.Controls.Add(label1);
             panel1.Controls.Add(btnCerrarSesion);
-            panel1.Location = new Point(-1, 1);
+            panel1.Location = new Point(182, 1);
+            panel1.Margin = new Padding(3, 2, 3, 2);
             panel1.Name = "panel1";
-            panel1.Size = new Size(1176, 84);
+            panel1.Size = new Size(846, 63);
             panel1.TabIndex = 29;
+            panel1.Paint += panel1_Paint;
+            // 
+            // btnCerrar
+            // 
+            btnCerrar.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
+            btnCerrar.Location = new Point(771, 3);
+            btnCerrar.Name = "btnCerrar";
+            btnCerrar.Size = new Size(72, 57);
+            btnCerrar.TabIndex = 26;
+            btnCerrar.Text = "Cerrar Sesión";
+            btnCerrar.UseVisualStyleBackColor = true;
+            btnCerrar.Click += btnCerrar_Click;
             // 
             // panel2
             // 
-            panel2.BackColor = Color.Gainsboro;
+            panel2.BackColor = Color.FromArgb(30, 58, 138);
+            panel2.Controls.Add(pictureBox1);
             panel2.Controls.Add(btnCrearCurso);
             panel2.Controls.Add(btnAsignarEstudiante);
             panel2.Controls.Add(btnRegistrarUsuario);
-            panel2.Location = new Point(-1, 82);
+            panel2.Location = new Point(-1, 1);
+            panel2.Margin = new Padding(3, 2, 3, 2);
             panel2.Name = "panel2";
-            panel2.Size = new Size(210, 635);
+            panel2.Size = new Size(184, 646);
             panel2.TabIndex = 30;
+            // 
+            // pictureBox1
+            // 
+            pictureBox1.BackgroundImage = Properties.Resources.Logo;
+            pictureBox1.BackgroundImageLayout = ImageLayout.Stretch;
+            pictureBox1.Image = Properties.Resources.Logo;
+            pictureBox1.Location = new Point(23, 3);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(131, 121);
+            pictureBox1.TabIndex = 28;
+            pictureBox1.TabStop = false;
             // 
             // frm_Administrador
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ControlLightLight;
-            ClientSize = new Size(1174, 716);
+            ClientSize = new Size(1041, 646);
             Controls.Add(panel2);
             Controls.Add(panel1);
             Controls.Add(pnlContenedor);
-            Margin = new Padding(3, 4, 3, 4);
             Name = "frm_Administrador";
             Text = "frm_Administrador";
+            Load += frm_Administrador_Load;
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
         }
 
@@ -153,5 +183,7 @@
         private Panel pnlContenedor;
         private Panel panel1;
         private Panel panel2;
+        private PictureBox pictureBox1;
+        private Button btnCerrar;
     }
 }

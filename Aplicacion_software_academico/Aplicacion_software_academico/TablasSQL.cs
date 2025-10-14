@@ -59,6 +59,7 @@ namespace Aplicacion_software_academico
                         idAsignatura = (int)cmd.ExecuteScalar();
                         return "Asignatura registrada correctamente";
                     }
+
                 }
                 catch (Exception ex)
                 {

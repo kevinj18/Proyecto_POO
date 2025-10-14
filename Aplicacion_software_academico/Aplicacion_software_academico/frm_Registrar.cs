@@ -42,6 +42,7 @@ namespace Aplicacion_software_academico
 
         private void frm_Registrar_Load(object sender, EventArgs e)
         {
+            AplicarEstilos();
             cmbRol.Items.Clear();
             // Agregar los roles disponibles
             cmbRol.Items.Add("administrador");
@@ -123,6 +124,44 @@ namespace Aplicacion_software_academico
             {
                 MessageBox.Show("Error al crear usuario: " + ex.Message);
             }
+        }
+
+        [System.Runtime.InteropServices.DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
+        private static extern IntPtr CreateRoundRectRgn(
+        int nLeftRect, int nTopRect, int nRightRect, int nBottomRect,
+        int nWidthEllipse, int nHeightEllipse);
+
+        private void AplicarEstilos()
+        {
+            // --- FONDO GENERAL ---
+            this.BackColor = Color.FromArgb(244, 246, 249); // Gris azulado muy claro
+
+            // --- PANEL SUPERIOR (ENCABEZADO) ---
+            panel1.BackColor = Color.FromArgb(74, 144, 226); // Azul pastel
+            panel1.Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, panel1.Width, panel1.Height, 15, 15));
+
+            // --- COMBOBOX ASIGNATURAS ---
+            cmbRol.Font = new Font("Segoe UI", 10);
+            cmbRol.FlatStyle = FlatStyle.Flat;
+            cmbRol.BackColor = Color.White;
+            cmbRol.ForeColor = Color.FromArgb(44, 62, 80); // gris oscuro
+            cmbRol.DropDownStyle = ComboBoxStyle.DropDownList;
+
+            // --- BOTÓN GUARDAR ---
+            btnRegistrar.BackColor = Color.FromArgb(74, 144, 226); // Azul pastel
+            btnRegistrar.ForeColor = Color.White;
+            btnRegistrar.FlatStyle = FlatStyle.Flat;
+            btnRegistrar.Font = new Font("Segoe UI Semibold", 11, FontStyle.Italic);
+            btnRegistrar.FlatAppearance.BorderSize = 0;
+
+            // Hover y Click
+            btnRegistrar.FlatAppearance.MouseOverBackColor = Color.FromArgb(37, 99, 235); // Hover
+            btnRegistrar.FlatAppearance.MouseDownBackColor = Color.FromArgb(29, 78, 216); // Click
+
+            // Bordes redondeados
+            btnRegistrar.Region = System.Drawing.Region.FromHrgn(
+                CreateRoundRectRgn(0, 0, btnRegistrar.Width, btnRegistrar.Height, 15, 15)
+            );
         }
 
         private void panelAdmin_Paint(object sender, PaintEventArgs e)

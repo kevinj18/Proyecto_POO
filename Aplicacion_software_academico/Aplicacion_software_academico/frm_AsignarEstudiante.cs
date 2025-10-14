@@ -83,7 +83,7 @@ namespace Aplicacion_software_academico
             }
             catch (SqlException ex)
             {
-                if (ex.Number == 2627) // PK violada → ya existe
+                if (ex.Number == 2627) // PK ya existe
                 {
                     MessageBox.Show("Este estudiante ya está inscrito en la materia seleccionada.");
                 }
@@ -114,8 +114,53 @@ namespace Aplicacion_software_academico
             conexion.CerrarConexion();
         }
 
+        [System.Runtime.InteropServices.DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
+        private static extern IntPtr CreateRoundRectRgn(
+        int nLeftRect, int nTopRect, int nRightRect, int nBottomRect,
+        int nWidthEllipse, int nHeightEllipse);
+
+        private void AplicarEstilos()
+        {
+            // --- FONDO GENERAL ---
+            this.BackColor = Color.FromArgb(244, 246, 249); // Gris azulado muy claro
+
+            // --- PANEL SUPERIOR (ENCABEZADO) ---
+            panel1.BackColor = Color.FromArgb(74, 144, 226); // Azul pastel
+            panel1.Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, panel1.Width, panel1.Height, 15, 15));
+
+            // --- COMBOBOX ASIGNATURAS ---
+            cmbAsignatura.Font = new Font("Segoe UI", 10);
+            cmbAsignatura.FlatStyle = FlatStyle.Flat;
+            cmbAsignatura.BackColor = Color.White;
+            cmbAsignatura.ForeColor = Color.FromArgb(44, 62, 80); // gris oscuro
+            cmbAsignatura.DropDownStyle = ComboBoxStyle.DropDownList;
+
+            // --- COMBOBOX ESTUDIANTES ---
+            cmbEstudiantes.Font = new Font("Segoe UI", 10);
+            cmbEstudiantes.FlatStyle = FlatStyle.Flat;
+            cmbEstudiantes.BackColor = Color.White;
+            cmbEstudiantes.ForeColor = Color.FromArgb(44, 62, 80); // gris oscuro
+            cmbEstudiantes.DropDownStyle = ComboBoxStyle.DropDownList;
+
+            // --- BOTÓN GUARDAR ---
+            btnGuardar.BackColor = Color.FromArgb(74, 144, 226); // Azul pastel
+            btnGuardar.ForeColor = Color.White;
+            btnGuardar.FlatStyle = FlatStyle.Flat;
+            btnGuardar.Font = new Font("Segoe UI Semibold", 11, FontStyle.Italic);
+            btnGuardar.FlatAppearance.BorderSize = 0;
+
+            // Hover y Click
+            btnGuardar.FlatAppearance.MouseOverBackColor = Color.FromArgb(37, 99, 235); // Hover
+            btnGuardar.FlatAppearance.MouseDownBackColor = Color.FromArgb(29, 78, 216); // Click
+
+            // Bordes redondeados
+            btnGuardar.Region = System.Drawing.Region.FromHrgn(
+                CreateRoundRectRgn(0, 0, btnGuardar.Width, btnGuardar.Height, 15, 15)
+            );
+        }
         private void frm_AsignarEstudiante_Load(object sender, EventArgs e)
         {
+            AplicarEstilos();
             CargarEstudiantes();
             CargarMaterias();
         }
