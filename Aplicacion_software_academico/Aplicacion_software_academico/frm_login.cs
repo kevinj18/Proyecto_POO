@@ -211,6 +211,11 @@ namespace Aplicacion_software_academico
         {
 
         }
+
+        private void picLogo_Click(object sender, EventArgs e)
+        {
+
+        }
     }
     public static class SesionActual
     {
