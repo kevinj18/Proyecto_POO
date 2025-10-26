@@ -99,60 +99,6 @@ namespace Aplicacion_software_academico
             }
         }
 
-        private void btnIniciar_Click_1(object sender, EventArgs e)
-        {
-            TablasSQL.Usuario usuario = new TablasSQL.Usuario();
-            //TablasSQL.Estudiante estudiante = new TablasSQL.Estudiante();
-            string Usuario = txtUsuario.Text;
-            string contraseña = txtContrasena.Text;
-
-            string validarUser = usuario.validarUsuario(Usuario, contraseña);
-
-            if (validarUser == "estudiante")
-            {
-                //SesionActual.Correo = txtUsuario.Text;
-                //SesionActual.Rol = "estudiante";
-
-                frm_Estudiantes formEstudiante = new frm_Estudiantes();
-                formEstudiante.Show();
-                this.Hide();
-            }
-
-            //if (validarUser.Equals("estudiante"))
-            //{
-            //    MessageBox.Show("Inicio de sesión exitoso como Estudiante");
-            //    UserActu = txtUsuario.Text;
-
-            //    // abrir la interfaz de estudiante
-            //    frm_Estudiantes formEstudiante = new frm_Estudiantes();
-            //    formEstudiante.Show();
-
-            //    this.Hide();
-            //}
-            //if (validarUser.Equals("Correcto"))
-            //{
-            //    MessageBox.Show("Inicio de sesión exitoso");
-            //    UserActu = txtUsuario.Text;
-            //}
-
-            else if (validarUser == "profesor")
-            {
-                frm_Profesor formProfesor = new frm_Profesor();
-                formProfesor.Show();
-                this.Hide();
-            }
-            else if (validarUser == "administrador")
-            {
-                frm_Administrador formAdmin = new frm_Administrador();
-                formAdmin.Show();
-                this.Hide();
-            }
-            else
-            {
-                MessageBox.Show(validarUser);
-            }
-        }
-
         private void btnIniciar_Click(object sender, EventArgs e)
         {
             TablasSQL.Usuario usuario = new TablasSQL.Usuario();

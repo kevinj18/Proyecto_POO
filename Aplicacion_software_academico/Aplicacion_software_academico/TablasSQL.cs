@@ -227,13 +227,6 @@ namespace Aplicacion_software_academico
                             //}
 
                         }
-                        return "Usuario registrado correctamente";
-                    }
-                }
-                catch (Exception ex)
-                {
-                    return "Error al registrar usuario: " + ex.Message;
-                }
             }
 
 
