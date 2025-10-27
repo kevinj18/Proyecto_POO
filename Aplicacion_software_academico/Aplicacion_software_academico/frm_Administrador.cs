@@ -54,7 +54,7 @@ namespace Aplicacion_software_academico
         {
             try
             {
-                frm_Registrar formCrearUser = new frm_Registrar();
+                frm_RegistrarUsuario formCrearUser = new frm_RegistrarUsuario();
 
 
                 AbrirFormularioEnPanel(formCrearUser);
@@ -84,7 +84,7 @@ namespace Aplicacion_software_academico
         {
             try
             {
-                frm_AsignarEstudiante formAsigEstudiante = new frm_AsignarEstudiante();
+                frm_AsignarEst formAsigEstudiante = new frm_AsignarEst();
 
                 AbrirFormularioEnPanel(formAsigEstudiante);
             }

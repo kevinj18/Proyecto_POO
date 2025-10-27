@@ -85,6 +85,11 @@ namespace Aplicacion_software_academico
             public string Correo { get => correo; set => correo = value; }
             public string Rol { get => rol; set => rol = value; }
             public string Contrasena { get => contrasena; set => contrasena = value; }
+            public string Semestre { get; set; }
+            public DateTime? FechaIngreso { get; set; }
+            public string Especialidad { get; set; }
+            public DateTime? FechaContratacion { get; set; }
+            public string Cargo { get; set; }
 
 
             // Valida si el usuario existe en la base de datos
@@ -120,15 +125,15 @@ namespace Aplicacion_software_academico
                             SesionActual.Correo = correo;
                             SesionActual.Rol = rol;
 
-                            if (rol == "estudiante" && reader["id_estudiante"] != DBNull.Value)
+                            if (rol.ToLower() == "estudiante" && reader["id_estudiante"] != DBNull.Value)
                             {
                                 SesionActual.IdEstudiante = Convert.ToInt32(reader["id_estudiante"]);
                             }
-                            else if (rol == "profesor" && reader["id_profesor"] != DBNull.Value)
+                            else if (rol.ToLower() == "profesor" && reader["id_profesor"] != DBNull.Value)
                             {
                                 SesionActual.IdProfesor = Convert.ToInt32(reader["id_profesor"]);
                             }
-                            else if (rol == "administrador" && reader["id_admin"] != DBNull.Value)
+                            else if (rol.ToLower() == "administrador" && reader["id_admin"] != DBNull.Value)
                             {
                                 SesionActual.IdAdmin = Convert.ToInt32(reader["id_admin"]);
                             }
@@ -153,80 +158,78 @@ namespace Aplicacion_software_academico
 
             }
             // Registra un nuevo usuario en la base de datos
-            public string registrarUsuario(string nombre, string correo, string contrasena, string rol,
-                               string semestre = null, DateTime? fechaIngreso = null,
-                               string especialidad = null, DateTime? fechaContratacion = null,
-                               string cargo = null)
+            public static string registrarUsuario(string nombre,
+                                                  string correo,
+                                                  string contrasena,
+                                                  string rol,
+                                                  string semestre = null,
+                                                  DateTime? fechaIngreso = null,
+                                                  string especialidad = null,
+                                                  DateTime? fechaContratacion = null,
+                                                  string cargo = null)
             {
+                string resultado = "";
+                cConexion conexion = new cConexion();
+                SqlConnection conn = null;
+
                 try
                 {
-                    using (SqlConnection conn = conexion.AbrirConexion())
+                    conn = conexion.AbrirConexion();
+
+                    string queryUsuario = @"INSERT INTO Usuario (nombre, correo, contrasena, rol)
+                                OUTPUT INSERTED.id_usuario
+                                VALUES (@nombre, @correo, @contrasena, @rol)";
+
+                    SqlCommand cmdUsuario = new SqlCommand(queryUsuario, conn);
+                    cmdUsuario.Parameters.AddWithValue("@nombre", nombre);
+                    cmdUsuario.Parameters.AddWithValue("@correo", correo);
+                    cmdUsuario.Parameters.AddWithValue("@contrasena", contrasena);
+                    cmdUsuario.Parameters.AddWithValue("@rol", rol);
+
+                    int idUsuario = Convert.ToInt32(cmdUsuario.ExecuteScalar());
+
+                    // Inserta según el rol
+                    switch (rol.ToLower())
                     {
-                        string query = "insert into Usuario (nombre, correo, contrasena, rol) " +
-                                        "output inserted.id_usuario " +
-                                        "values (@nombre, @correo, @contrasena, @rol)";
-                        int idUsuario;
-                        SqlCommand cmd = new SqlCommand(query, conn);
-                        
-                        //using (SqlCommand cmd = new SqlCommand(query, conn))
-                        //{
-                        cmd.Parameters.AddWithValue("@nombre", nombre);
-                        cmd.Parameters.AddWithValue("@correo", correo);
-                        cmd.Parameters.AddWithValue("@contrasena", contrasena);
-                        cmd.Parameters.AddWithValue("@rol", rol);
-                        idUsuario = (int)cmd.ExecuteScalar();
+                        case "estudiante":
+                            string queryEst = "INSERT INTO Estudiante (id_usuario, semestre, fecha_ingreso) VALUES (@idUsuario, @semestre, @fechaIngreso)";
+                            SqlCommand cmdEst = new SqlCommand(queryEst, conn);
+                            cmdEst.Parameters.AddWithValue("@idUsuario", idUsuario);
+                            cmdEst.Parameters.AddWithValue("@semestre", semestre);
+                            cmdEst.Parameters.AddWithValue("@fechaIngreso", fechaIngreso);
+                            cmdEst.ExecuteNonQuery();
+                            break;
 
-                            //int filas = cmd.ExecuteNonQuery();
+                        case "profesor":
+                            string queryProf = "INSERT INTO Profesor (id_usuario, especialidad, fecha_contratacion) VALUES (@idUsuario, @especialidad, @fechaContratacion)";
+                            SqlCommand cmdProf = new SqlCommand(queryProf, conn);
+                            cmdProf.Parameters.AddWithValue("@idUsuario", idUsuario);
+                            cmdProf.Parameters.AddWithValue("@especialidad", especialidad);
+                            cmdProf.Parameters.AddWithValue("@fechaContratacion", fechaContratacion);
+                            cmdProf.ExecuteNonQuery();
+                            break;
 
-                            //if (filas > 0)
-                            //    return "Usuario registrado correctamente";
-                            //else
-                            //    return "No se pudo registrar el usuario";
-                        
+                        case "administrador":
+                            string queryAdmin = "INSERT INTO Administrador (id_usuario, cargo) VALUES (@idUsuario, @cargo)";
+                            SqlCommand cmdAdmin = new SqlCommand(queryAdmin, conn);
+                            cmdAdmin.Parameters.AddWithValue("@idUsuario", idUsuario);
+                            cmdAdmin.Parameters.AddWithValue("@cargo", cargo);
+                            cmdAdmin.ExecuteNonQuery();
+                            break;
+                    }
 
-                        string queryRol = "";
-                        SqlCommand cmdRol = null;
-                        if (rol.ToLower() == "estudiante")
-                        {
-                            queryRol = "insert into Estudiante (id_usuario, semestre, fecha_ingreso) " +
-                           "values (@idUsuario, @semestre, @fechaIngreso)";
-                            cmdRol = new SqlCommand(queryRol, conn);
-                            cmdRol.Parameters.AddWithValue("@idUsuario", idUsuario);
-                            cmdRol.Parameters.AddWithValue("@semestre", semestre);
-                            cmdRol.Parameters.AddWithValue("@fechaIngreso", fechaIngreso);
-                        }
-                        else if (rol.ToLower() == "profesor")
-                        {
-                            queryRol = "insert into Profesor (id_usuario, especialidad, fecha_contratacion) " +
-                           "values (@idUsuario, @especialidad, @fechaContratacion)";
-                            cmdRol = new SqlCommand(queryRol, conn);
-                            cmdRol.Parameters.AddWithValue("@idUsuario", idUsuario);
-                            cmdRol.Parameters.AddWithValue("@especialidad", especialidad);
-                            cmdRol.Parameters.AddWithValue("@fechaContratacion", fechaContratacion);
-                        }
-                        else if (rol.ToLower() == "administrador")
-                        {
-                            queryRol = "insert into Administrador (id_usuario, cargo) " +
-                           "values (@idUsuario, @cargo)";
-                            cmdRol = new SqlCommand(queryRol, conn);
-                            cmdRol.Parameters.AddWithValue("@idUsuario", idUsuario);
-                            cmdRol.Parameters.AddWithValue("@cargo", cargo);
-                        }
-                        if (cmdRol != null)
-                        {
-                            cmdRol.ExecuteNonQuery();
-                            //using (SqlCommand cmdRol = new SqlCommand(queryRol, conn)) {
+                    return "✅ Usuario registrado correctamente: ";
+                }
+                catch (Exception ex)
+                {
+                    return "❌ Error al registrar usuario " + nombre + ": " + ex.Message;
+                }
+                finally
+                {
+                    // Asegura cierre limpio
+                    conexion.CerrarConexion();
 
-
-                            //    cmdRol.Parameters.AddWithValue("@idUsuario", idUsuario);
-
-                            //    cmdRol.ExecuteNonQuery();
-
-                            //cmdRol.ExecuteNonQuery();
-
-                            //}
-
-                        }
+                }
             }
 
 

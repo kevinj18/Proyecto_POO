@@ -1,3 +1,5 @@
+using OfficeOpenXml;
+
 namespace Aplicacion_software_academico
 {
     internal static class Program

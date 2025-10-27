@@ -88,7 +88,7 @@ namespace Aplicacion_software_academico
                     string semestre = txtSemestre.Text;
                     DateTime fechaIngreso = dtpFechaIngreso.Value;
 
-                    string resultado = usuario.registrarUsuario(nombre, correo, contrasena, rol,
+                    string resultado = TablasSQL.Usuario.registrarUsuario(nombre, correo, contrasena, rol,
                                                         semestre, fechaIngreso);
                     MessageBox.Show(resultado);
                 }
@@ -96,7 +96,7 @@ namespace Aplicacion_software_academico
                 {
                     string especialidad = txtEspecialidad.Text;
                     DateTime fechaContratacion = dtpFehcaContratacion.Value;
-                    string resultado = usuario.registrarUsuario(nombre, correo, contrasena, rol,
+                    string resultado = TablasSQL.Usuario.registrarUsuario(nombre, correo, contrasena, rol,
                                                         null, null, especialidad, fechaContratacion);
                     MessageBox.Show(resultado);
                 }
@@ -105,7 +105,7 @@ namespace Aplicacion_software_academico
                 {
                     string cargo = txtCargo.Text;
 
-                    string resultado = usuario.registrarUsuario(nombre, correo, contrasena, rol,
+                    string resultado = TablasSQL.Usuario.registrarUsuario(nombre, correo, contrasena, rol,
                                                         null, null, null, null, cargo);
                     MessageBox.Show(resultado);
                 }
