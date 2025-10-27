@@ -25,7 +25,7 @@ namespace Aplicacion_software_academico
             try
             {
                 // Obtener valores del formulario
-                int idEstudiante = int.Parse(txtIdEstudiante.Text);
+                int idEstudiante = SesionActual.IdEstudiante;
                 int idAsignatura = int.Parse(txtIdAsignatura.Text);
                 string tipo = cmbTipo.SelectedItem.ToString();
                 string descripcion = txtDescripcion.Text;
@@ -91,7 +91,7 @@ namespace Aplicacion_software_academico
             }
 
             // --- TEXTBOXES ---
-            TextBox[] textBoxes = { txtIdEstudiante, txtIdAsignatura };
+            TextBox[] textBoxes = { txtIdAsignatura };
             foreach (TextBox txt in textBoxes)
             {
                 txt.Font = new Font("Segoe UI", 10);

@@ -82,9 +82,9 @@
             label1.Font = new Font("Stencil", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
             label1.Location = new Point(311, 22);
             label1.Name = "label1";
-            label1.Size = new Size(213, 29);
+            label1.Size = new Size(206, 29);
             label1.TabIndex = 25;
-            label1.Text = "Administración";
+            label1.Text = "Administrador";
             // 
             // btnCrearCurso
             // 

@@ -28,11 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            label1 = new Label();
             label2 = new Label();
             label3 = new Label();
             label4 = new Label();
-            txtIdEstudiante = new TextBox();
             txtIdAsignatura = new TextBox();
             txtDescripcion = new TextBox();
             cmbTipo = new ComboBox();
@@ -44,21 +42,11 @@
             panel2.SuspendLayout();
             SuspendLayout();
             // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 12F, FontStyle.Italic, GraphicsUnit.Point, 0);
-            label1.Location = new Point(372, 68);
-            label1.Name = "label1";
-            label1.Size = new Size(99, 21);
-            label1.TabIndex = 0;
-            label1.Text = "Id Estudiante";
-            // 
             // label2
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI", 12F, FontStyle.Italic, GraphicsUnit.Point, 0);
-            label2.Location = new Point(372, 134);
+            label2.Location = new Point(378, 96);
             label2.Name = "label2";
             label2.Size = new Size(103, 21);
             label2.TabIndex = 1;
@@ -68,7 +56,7 @@
             // 
             label3.AutoSize = true;
             label3.Font = new Font("Segoe UI", 12F, FontStyle.Italic, GraphicsUnit.Point, 0);
-            label3.Location = new Point(372, 200);
+            label3.Location = new Point(378, 162);
             label3.Name = "label3";
             label3.Size = new Size(40, 21);
             label3.TabIndex = 2;
@@ -84,16 +72,9 @@
             label4.TabIndex = 3;
             label4.Text = "Descripción";
             // 
-            // txtIdEstudiante
-            // 
-            txtIdEstudiante.Location = new Point(372, 92);
-            txtIdEstudiante.Name = "txtIdEstudiante";
-            txtIdEstudiante.Size = new Size(219, 23);
-            txtIdEstudiante.TabIndex = 4;
-            // 
             // txtIdAsignatura
             // 
-            txtIdAsignatura.Location = new Point(372, 158);
+            txtIdAsignatura.Location = new Point(378, 120);
             txtIdAsignatura.Name = "txtIdAsignatura";
             txtIdAsignatura.Size = new Size(219, 23);
             txtIdAsignatura.TabIndex = 5;
@@ -109,7 +90,7 @@
             // cmbTipo
             // 
             cmbTipo.FormattingEnabled = true;
-            cmbTipo.Location = new Point(372, 224);
+            cmbTipo.Location = new Point(378, 186);
             cmbTipo.Name = "cmbTipo";
             cmbTipo.Size = new Size(219, 23);
             cmbTipo.TabIndex = 7;
@@ -167,10 +148,8 @@
             Controls.Add(panel1);
             Controls.Add(cmbTipo);
             Controls.Add(txtIdAsignatura);
-            Controls.Add(txtIdEstudiante);
             Controls.Add(label3);
             Controls.Add(label2);
-            Controls.Add(label1);
             Name = "frm_SolicitudRevisioncs";
             Text = "frm_SolicitudRevisioncs";
             Load += frm_SolicitudRevisioncs_Load;
@@ -183,12 +162,9 @@
         }
 
         #endregion
-
-        private Label label1;
         private Label label2;
         private Label label3;
         private Label label4;
-        private TextBox txtIdEstudiante;
         private TextBox txtIdAsignatura;
         private TextBox txtDescripcion;
         private ComboBox cmbTipo;
