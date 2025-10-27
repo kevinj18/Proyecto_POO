@@ -137,13 +137,21 @@ namespace Aplicacion_software_academico
             int idAsignatura = Convert.ToInt32(cmbIdAsignatura.SelectedValue);
 
             string query = @"
-        SELECT a.id_asistencia, e.id_estudiante, u.nombre AS Estudiante,
-               a.fecha, a.estado
-        FROM Asistencia a
-        INNER JOIN Estudiante e ON a.id_estudiante = e.id_estudiante
-        INNER JOIN Usuario u ON e.id_usuario = u.id_usuario
-        WHERE a.id_asignatura = @idAsignatura
-        ORDER BY a.fecha DESC";
+SELECT 
+    a.id_asistencia,
+    e.id_estudiante,
+    u.nombre AS Estudiante,
+    a.fecha,
+    a.estado
+FROM Estudiante_Asignatura ea
+INNER JOIN Estudiante e ON ea.id_estudiante = e.id_estudiante
+INNER JOIN Usuario u ON e.id_usuario = u.id_usuario
+LEFT JOIN Asistencia a 
+    ON a.id_estudiante = e.id_estudiante 
+    AND a.id_asignatura = ea.id_asignatura 
+    AND CAST(a.fecha AS DATE) = CAST(GETDATE() AS DATE)
+WHERE ea.id_asignatura = @idAsignatura
+ORDER BY u.nombre";
 
             SqlCommand cmd = new SqlCommand(query, conexion.AbrirConexion());
             cmd.Parameters.AddWithValue("@idAsignatura", idAsignatura);
@@ -152,54 +160,23 @@ namespace Aplicacion_software_academico
             DataTable dt = new DataTable();
             da.Fill(dt);
 
-            // Si no hay asistencias registradas, mostrar estudiantes inscritos
-            if (dt.Rows.Count == 0)
-            {
-
-                query = @"
-            SELECT CAST(NULL AS INT) AS id_asistencia,
-                   e.id_estudiante,
-                   u.nombre AS Estudiante,
-                   CAST(NULL AS DATE) AS fecha,
-                   CAST(NULL AS VARCHAR(20)) AS estado
-            FROM Estudiante_Asignatura ea
-            INNER JOIN Estudiante e ON ea.id_estudiante = e.id_estudiante
-            INNER JOIN Usuario u ON e.id_usuario = u.id_usuario
-            WHERE ea.id_asignatura = @idAsignatura";
-
-                cmd = new SqlCommand(query, conexion.AbrirConexion());
-                cmd.Parameters.AddWithValue("@idAsignatura", idAsignatura);
-
-                da = new SqlDataAdapter(cmd);
-                dt = new DataTable();
-                da.Fill(dt);
-            }
-
-
             dgvAsistencia.DataSource = dt;
 
-            // oculto columnas técnicas si existen
+            // Ocultar columnas internas
             if (dgvAsistencia.Columns.Contains("id_asistencia"))
                 dgvAsistencia.Columns["id_asistencia"].Visible = false;
             if (dgvAsistencia.Columns.Contains("id_estudiante"))
                 dgvAsistencia.Columns["id_estudiante"].Visible = false;
 
-
-            if (dgvAsistencia.Columns.Contains("fecha"))
-            {
-                dgvAsistencia.Columns["fecha"].ReadOnly = true;
-            }
-
-
+            // Configurar columna estado como ComboBox
             if (dgvAsistencia.Columns.Contains("estado"))
             {
                 int idx = dgvAsistencia.Columns["estado"].Index;
-                // remover la columna actual
                 dgvAsistencia.Columns.Remove("estado");
 
                 var combo = new DataGridViewComboBoxColumn();
                 combo.Name = "estado";
-                combo.HeaderText = "estado";
+                combo.HeaderText = "Estado";
                 combo.DataPropertyName = "estado";
                 combo.Items.AddRange(new string[] { "Presente", "Ausente", "Tarde" });
                 combo.FlatStyle = FlatStyle.Flat;
@@ -230,8 +207,9 @@ namespace Aplicacion_software_academico
                     int idEstudiante = Convert.ToInt32(row.Cells["id_estudiante"].Value);
 
                     // estado viene del combo (string)
-                    string estado = row.Cells["estado"].Value?.ToString() ?? "Presente";
-
+                    string estado = row.Cells["estado"].Value?.ToString();
+                    if (string.IsNullOrWhiteSpace(estado))
+                        estado = "Presente";
                     // no usamos la fecha del grid: usamos GETDATE() en SQL
                     string query = @"
                 IF EXISTS (
